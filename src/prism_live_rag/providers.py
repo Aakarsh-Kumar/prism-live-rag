@@ -39,20 +39,23 @@ class OpenAICompatibleChatClient:
         temperature: float = 0.0,
         max_tokens: int = 512,
     ) -> str:
-        response = requests.post(
-            f"{self.base_url}/chat/completions",
-            headers={
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": model or self.default_model,
-                "messages": messages,
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-            },
-            timeout=self.timeout_s,
-        )
+        try:
+            response = requests.post(
+                f"{self.base_url}/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {self.api_key}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": model or self.default_model,
+                    "messages": messages,
+                    "temperature": temperature,
+                    "max_tokens": max_tokens,
+                },
+                timeout=self.timeout_s,
+            )
+        except requests.RequestException as exc:
+            raise ProviderError(f"Provider request failed: {exc}") from exc
         if response.status_code >= 400:
             raise ProviderError(f"Provider request failed: {response.status_code} {response.text[:300]}")
         payload = response.json()

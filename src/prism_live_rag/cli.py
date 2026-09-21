@@ -7,7 +7,7 @@ from .config import load_settings
 from .controller import simulate_chunks
 from .data import load_query_tasks, validate_domain
 from .pipeline import StreamingRagPipeline
-from .providers import provider_status
+from .providers import ProviderError, deepseek_client, groq_client, provider_status
 from .retrieval import HybridRetriever, LanceDbTimeout, LanceIndex
 
 
@@ -57,7 +57,21 @@ def cmd_run_demo(args: argparse.Namespace) -> None:
         corpus_limit=args.corpus_limit,
         use_dense=args.use_dense,
     )
-    pipeline = StreamingRagPipeline(retriever)
+    evidence_client = None
+    generation_client = None
+    if args.mode == "provider":
+        try:
+            evidence_client = deepseek_client(settings)
+            generation_client = groq_client(settings)
+        except ProviderError as exc:
+            print(json.dumps({"warning": str(exc), "fallback": "deterministic"}, indent=2))
+    pipeline = StreamingRagPipeline(
+        retriever,
+        synthesis_mode=args.mode,
+        evidence_client=evidence_client,
+        generation_client=generation_client,
+        enable_query_rewrite=args.rewrite_query,
+    )
     try:
         response = pipeline.run(simulate_chunks(task.query), domain=args.domain)
     except LanceDbTimeout as exc:
@@ -86,6 +100,8 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--task-index", type=int, default=0)
     demo.add_argument("--corpus-limit", type=int, default=5000)
     demo.add_argument("--use-dense", action="store_true", help="Use LanceDB dense search; run `prism-rag index` first.")
+    demo.add_argument("--mode", choices=["deterministic", "provider"], default="deterministic")
+    demo.add_argument("--rewrite-query", action="store_true", help="Use DeepSeek to rewrite the live utterance before retrieval.")
     demo.set_defaults(func=cmd_run_demo)
     return parser
 
