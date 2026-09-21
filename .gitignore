@@ -1,0 +1,25 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+.venv/
+
+# Python build/test output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+*.egg-info/
+
+# Runtime/generated indexes
+.cache/
+
+# Large local benchmark artifacts.
+# Keep small qrels/reference metadata commit-friendly, but do not commit corpora,
+# nested clone history, or PDFs intended only for local reference.
+data/.git/
+data/corpora/passage_level/*.jsonl
+data/mtragun-human/*.pdf

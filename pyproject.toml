@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prism-live-rag"
+version = "0.1.0"
+description = "Streaming Live RAG engine for Samsung Theme 04"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "lancedb>=0.13.0",
+  "pyarrow>=15.0.0",
+  "requests>=2.32.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[project.scripts]
+prism-rag = "prism_live_rag.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
