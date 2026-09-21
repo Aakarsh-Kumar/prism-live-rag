@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    user: "${UID:-1000}:${GID:-1000}"
+    env_file:
+      - .env
+    environment:
+      PYTEST_ADDOPTS: "-o cache_dir=/app/.cache/pytest"
+    volumes:
+      - ./data:/app/data:ro
+      - ./.cache:/app/.cache
+    command: ["prism-rag", "run-demo", "--domain", "cloud"]
