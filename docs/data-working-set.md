@@ -33,3 +33,14 @@ Verified working-set coverage:
 `prism-rag index` writes LanceDB tables under `.cache/lancedb/`. This directory is
 ignored and should be regenerated locally or through Docker.
 
+## Committed Stream Fixtures
+
+`data/simulated_streams/{cloud,govt}.jsonl` are deterministic, generated fixtures
+(cloud: 106 streams, govt: 125) that are **committed** so `eval --mode streaming` and
+`play-stream` reproduce byte-for-byte without regenerating. Rebuild with
+`prism-rag generate-streams --domain <cloud|govt>` (fixed seed); validate with
+`prism-rag validate-streams`. Each line follows the `SimulatedStream` schema in
+`src/prism_live_rag/stream.py` (chunks with timestamps/confidence, `stability_chunk_index`,
+`settling_ms`, `sub_intents`, `qrel_passage_ids`). The `refinement` category described in
+`dataset-and-augmentation.md` is not generated yet.
+

@@ -3,6 +3,40 @@
 Streaming Live RAG baseline for Samsung Theme 04. The project is built in Python
 with LanceDB selected as the local vector database.
 
+The live path is driven by a rigorous streaming simulator
+(`src/prism_live_rag/stream.py`): irregular word delivery, mid-stream ASR revisions,
+LocalAgreement-n intent stability, and per-stream settling time. The rule-based
+controller fires only once the partial transcript is stable, and `eval --mode streaming`
+measures early retrieval before the user finishes speaking.
+
+## Project Status & Known Limitations
+
+The streaming foundation (simulator, intent-stability controller, streaming eval, G1
+reproducibility) is implemented and tested. The multi-intent decomposer, session
+refinement, full telemetry, model-based controller, ablations, and evaluation report
+are still in progress. Honest limitations a reader should assume:
+
+- **Streaming input is simulated, not real ASR.** `stream.py` reproduces partials,
+  revisions, and stability timing, but no audio/ASR adapter is wired in. Treat it as a
+  rigorous simulator with a documented swap point.
+- **Answer delivery is not token-streamed.** Retrieval fires early; the final answer is
+  returned whole. Do not read the streaming story as token-level streaming.
+- **The early-retrieval rate measures a provisional fire before the final chunk**, not
+  a fire before the ground-truth `stability_chunk_index`. See
+  `docs/approach-summary.md` for the exact definition.
+- **Retrieval recall is the current quality ceiling** (~0.42 recall@k / ~0.60
+  success@k on the local working set), which caps grounding.
+- **Abstention on genuinely unanswerable input is unsolved** in the literature; see
+  `docs/risks-and-open-problems.md`.
+
+## AI-Use Disclosure
+
+This project was developed with AI coding assistance under human direction: the human
+set the architecture, reviewed and edited all code, ran every experiment, and owns the
+final technical decisions. AI was used as an implementation and documentation aid, not
+as an autonomous author. Provider-backed features (Groq/DeepSeek) are used only in
+explicit demo/eval paths and never in tests or CI.
+
 ## Current Commands
 
 Use Python 3.11-3.13. The Docker image uses Python 3.11. Host Python 3.14 is not a
@@ -69,6 +103,27 @@ Run offline retrieval/controller evaluation:
 
 ```bash
 prism-rag eval --domain cloud --mode retrieval --max-tasks 50
+```
+
+Run streaming evaluation (early-retrieval, false-trigger, settling time) against the
+committed simulated streams:
+
+```bash
+prism-rag eval --domain cloud --mode streaming --max-tasks 200
+```
+
+Regenerate or validate the simulated streams (deterministic, no API calls):
+
+```bash
+prism-rag generate-streams --domain cloud
+prism-rag validate-streams --domain cloud
+```
+
+Play back a single stream to see each partial, the controller decision and reason, the
+mid-stream revision, and the final grounded answer:
+
+```bash
+prism-rag play-stream --domain cloud --stream-id cloud-0044
 ```
 
 Run a bounded real-provider smoke evaluation:

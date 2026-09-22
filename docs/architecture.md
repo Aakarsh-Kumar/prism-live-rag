@@ -18,10 +18,14 @@ Incoming Stream: [Chunk 0.0s] → [Chunk 0.8s] → [Chunk 1.6s] → [Utterance E
 ④ Session-Aware Synthesis — Incremental Answer Update → Grounding & Citation Check → Uncertainty Flag
         │
         ▼
-Output: Streamed Answer + Grounded Citations + Observability Telemetry
+Output: Answer + Grounded Citations + Observability Telemetry
 ```
 
-## ① Retrieval Controller
+Status of each stage as of the 2026-09-22 audit is tagged on its section below. ② and
+the session-refinement loop are target architecture, not yet built. Answer delivery is
+**not** token-streamed — do not claim streaming token delivery anywhere.
+
+## ① Retrieval Controller — [implemented]
 
 **Job:** decide, per incoming transcript chunk, whether to retrieve now, wait for more
 speech, or suppress retrieval entirely.
@@ -47,7 +51,7 @@ your controller code around these three names makes the design legible and citab
 incremental token causes thrashing, high compute cost, and noisy context windows. The
 controller must wait for semantic intent stability, not just any partial transcript.
 
-## ② Multi-Intent Decomposer
+## ② Multi-Intent Decomposer — [planned, not implemented]
 
 **Job:** split one utterance into 2–4 independent, search-ready sub-queries and route
 them for parallel retrieval.
@@ -59,16 +63,16 @@ them for parallel retrieval.
 - Don't decompose dependent multi-hop questions into parallel sub-queries — they need
   sequential resolution, not parallel search.
 
-## ③ Corpus Retrieval & Fusion
+## ③ Corpus Retrieval & Fusion — [implemented]
 
 See `retrieval.md` for full config, hyperparameters, and validated/invalidated
 techniques.
 
-## ④ Session-Aware Synthesis
+## ④ Session-Aware Synthesis — [implemented; refinement clause planned]
 
 See `generation-grounding.md` for full config, prompts, and validated techniques.
 
-## ⑤ Observability & Telemetry (cross-cutting)
+## ⑤ Observability & Telemetry (cross-cutting) — [partial]
 
 Log from day one, not as a final step:
 - Timestamps for every retrieval decision (wait/retrieve/suppress) and why
@@ -109,7 +113,7 @@ Deterministic corpus-vocabulary expansion is applied inside retrieval before bot
 dense and sparse legs, so downstream metrics should use raw event queries for
 controller timing and sub-queries for retrieval debugging.
 
-## Session refinement — patch, don't restart
+## Session refinement — patch, don't restart — [planned, not implemented]
 
 When a late-arriving constraint changes the answer:
 - Do NOT clear session state or re-run full-corpus retrieval.

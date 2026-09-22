@@ -39,18 +39,27 @@ the extracted passage corpora.
 
 ## Pipeline Approach
 
-The pipeline has four main stages:
+The pipeline has four main stages. Stages marked **[planned]** are specified here and
+in `architecture.md` but are not yet implemented in code as of the 2026-09-22 audit.
 
-1. **Retrieval Controller:** watches incremental transcript chunks and decides
-   `Wait`, `Retrieve`, or `No-Retrieval` based on intent stability.
-2. **Multi-Intent Decomposer:** splits compound utterances into 2-4 independent
-   search queries when needed.
-3. **Corpus Retrieval & Fusion:** uses hybrid dense+sparse retrieval, LanceDB-backed
-   dense search, weighted/nested RRF fusion, and optional cross-encoder reranking
-   when latency allows.
-4. **Session-Aware Synthesis:** extracts evidence spans before generation, enforces
-   citation grounding, applies deterministic insufficient-evidence fallback, and
-   patches late constraints instead of restarting the session.
+1. **[implemented] Retrieval Controller:** watches incremental transcript chunks and
+   decides `Wait`, `Retrieve`, or `No-Retrieval` based on intent stability. The
+   rule-based controller uses LocalAgreement-n: it fires only once the last `n`
+   partials agree on a stable word prefix (`agreement_n=2`, `min_stable_words=3`), and
+   suppresses presentation-only turns (e.g. "repeat that in two bullets"). Every
+   decision is logged with a timestamp and a reason.
+2. **[planned] Multi-Intent Decomposer:** splits compound utterances into 2-4
+   independent search queries when needed. Not yet built — there is no
+   `decomposer.py`, and `RagResponse.sub_queries` is currently populated by the single
+   query-rewrite step, not by decomposition.
+3. **[implemented] Corpus Retrieval & Fusion:** uses hybrid dense+sparse retrieval,
+   LanceDB-backed dense search, weighted/nested RRF fusion, and optional cross-encoder
+   reranking when latency allows.
+4. **[implemented] Session-Aware Synthesis:** extracts evidence spans before
+   generation, enforces citation grounding, and applies a deterministic
+   insufficient-evidence fallback. **[planned]** The session-refinement clause (patch
+   late constraints instead of restarting) is not yet implemented: `RagResponse` has no
+   `version` or `applied_delta`, and the pipeline has no session object.
 
 The current implementation has two execution modes. The default deterministic mode
 uses hash embeddings for initial local dense indexing, in-memory sparse scoring,
@@ -86,6 +95,45 @@ runs offline recall@k, MRR, and early-retrieval measurements. `--mode provider`
 executes bounded Groq+DeepSeek smoke tests and reports citation validity,
 qrel-citation hits, abstentions, and latency so the real deliverable path is measured
 instead of only mocked.
+
+## Streaming Simulation & Evaluation
+
+The live path is driven by a rigorous simulator rather than a naive word-prefix
+split. `src/prism_live_rag/stream.py` reproduces the conditions the controller must
+survive in real speech: irregular word-delivery timestamps, mid-stream ASR revisions
+that correct an earlier partial (e.g. `rteain` → `retain`), LocalAgreement-n stability
+labels, and a per-stream settling time. It generates three categories per domain —
+`early_retrieval`, `multi_intent`, and `no_retrieval` — and the generated streams are
+committed at `data/simulated_streams/{cloud,govt}.jsonl` so evaluation and the demo are
+reproducible without regenerating.
+
+- `prism-rag generate-streams --domain cloud` rebuilds the streams deterministically.
+- `prism-rag validate-streams --domain cloud` checks their invariants.
+- `prism-rag eval --domain cloud --mode streaming` reports early-retrieval rate,
+  false-trigger rate, and settling-time distribution.
+- `prism-rag play-stream --domain cloud --stream-id <id>` renders the full trace:
+  each partial, the controller decision and reason, the revision, and the final
+  grounded answer with citations.
+
+Because several MTRAG-UN queries are only 1–4 words, they cannot have a meaningful
+"before the user finishes" phase; the streaming metric therefore reports the rate over
+**eligible** streams (final word count ≥ 5) and excludes them from the denominator
+rather than inflating the score. Measured on the committed streams: early-retrieval
+0.97 cloud / 0.95 govt at a 0.0 false-trigger rate on both domains.
+
+**Metric definition, stated precisely.** The reported early-retrieval rate counts any
+stream where the controller fired a *provisional* retrieval before the final chunk. It
+does **not** yet measure the stricter condition "fired at or before
+`stability_chunk_index`" (the ground-truth intent-stability point). The looser
+definition matches Gate G2's wording ("retrieval commences before final transcript
+completion"); the stricter rate is a planned secondary metric. Do not quote the
+0.97/0.95 numbers as a before-stability result.
+
+`multi_intent` streams are generated and validated but are not yet scored by any
+metric — the G3 decomposer and its evaluation are still to be built. The legacy
+`simulate_chunks` word-prefix helper is still used by `run-demo` and by
+`eval --mode retrieval`; only `play-stream` and `eval --mode streaming` consume the
+real streams.
 
 The live path is latency-first. The controller, decomposer, and final streamed answer
 should use the fastest acceptable provider to minimize time-to-first-token. Slower,
