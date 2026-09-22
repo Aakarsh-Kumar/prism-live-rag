@@ -52,12 +52,20 @@ The pipeline has four main stages:
    citation grounding, applies deterministic insufficient-evidence fallback, and
    patches late constraints instead of restarting the session.
 
-The current implementation is a deterministic baseline: hash embeddings for initial
-local dense indexing, in-memory sparse scoring, weighted RRF fusion, a rule-based
-streaming controller, and extraction-based synthesis. By default the demo uses the
-fast sparse/RRF path; after running `prism-rag index`, `--use-dense` includes the
-LanceDB dense index. Groq and DeepSeek keys are loaded from `.env` for the next
-provider-backed iteration, but the baseline can run without spending API calls.
+The current implementation has two execution modes. The default deterministic mode
+uses hash embeddings for initial local dense indexing, in-memory sparse scoring,
+weighted RRF fusion, a rule-based streaming controller, and extraction-based
+synthesis. Provider mode is enabled with `prism-rag run-demo --mode provider
+--rewrite-query`: DeepSeek rewrites unstable utterances and extracts evidence spans,
+while Groq generates the final grounded answer from those spans. Provider failures
+or malformed JSON fall back to deterministic extraction, so local demos still run
+without spending API calls. Provider mode also refreshes retrieval on the final ASR
+transcript: the provisional event is preserved for early-retrieval measurement, but
+the final answer uses evidence from the more complete query when available.
+The current Groq default is `openai/gpt-oss-120b`, with `GROQ_MODEL` available as an
+override because Groq model availability changes by date and account tier.
+Provider calls use `PROVIDER_TIMEOUT_S` (default 12s) and are intended for demos, not
+CI loops, until caching and rate-limit guards are added.
 
 Local note: LanceDB indexing should be run under the supported Python range or via
 Docker. Host Python 3.14 is currently not treated as a supported LanceDB runtime.
@@ -67,6 +75,11 @@ Docker. Host Python 3.14 is currently not treated as a supported LanceDB runtime
 We allow cross-encoder reranking, but ban generative LLM-as-judge reranking because
 the reviewed SemEval systems found it slower, costlier, and lower quality than RRF
 on the same candidate pool.
+
+Query expansion is an explicit retrieval component, not hidden reranking. The first
+staging rule maps region wording such as "South America" to IBM Cloud corpus tokens
+such as `sao paulo` and `br-sao`, then feeds the expanded query to both dense and
+sparse retrieval legs before weighted RRF.
 
 The live path is latency-first. The controller, decomposer, and final streamed answer
 should use the fastest acceptable provider to minimize time-to-first-token. Slower,

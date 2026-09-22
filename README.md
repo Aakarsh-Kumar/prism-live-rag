@@ -38,10 +38,31 @@ Run the deterministic streaming demo:
 PYTHONPATH=src python3 -m prism_live_rag.cli run-demo --domain cloud
 ```
 
+Run the provider-backed synthesis path after adding `GROQ_API_KEY` and
+`DEEPSEEK_API_KEY` to `.env`:
+
+```bash
+prism-rag run-demo --domain cloud --mode provider --rewrite-query
+```
+
+Provider mode keeps the early provisional retrieval event, refreshes retrieval when
+the final transcript arrives, uses DeepSeek for optional query rewriting and evidence
+span extraction, then uses Groq for the final grounded answer. If a provider is
+unavailable or returns malformed JSON, the command falls back to deterministic
+extraction.
+Provider mode makes live API calls; keep it out of tests/CI until caching and
+rate-limit guards are added.
+
 After building the LanceDB index, include dense retrieval in the demo:
 
 ```bash
 prism-rag run-demo --domain cloud --use-dense
+```
+
+To test final-transcript refresh without spending API calls:
+
+```bash
+prism-rag run-demo --domain cloud --refine-on-final
 ```
 
 Run tests after installing dev dependencies:
@@ -67,6 +88,12 @@ Preferred key names in `.env`:
 ```bash
 GROQ_API_KEY=...
 DEEPSEEK_API_KEY=...
+# Optional overrides:
+GROQ_MODEL=openai/gpt-oss-120b
+DEEPSEEK_MODEL=deepseek-chat
+PROVIDER_TIMEOUT_S=12
+BM25_K1=1.2
+BM25_B=0.75
 ```
 
 The loader also accepts the dashed aliases currently used locally.
@@ -74,7 +101,7 @@ The loader also accepts the dashed aliases currently used locally.
 ## Repository Layout
 
 ```text
-src/prism_live_rag/      Python package: data loading, retrieval, controller, pipeline
+src/prism_live_rag/      Python package: data loading, retrieval, controller, LLM steps, pipeline
 tests/                   Unit/smoke tests for data joins, controller, pipeline shape
 docs/                    Architecture notes, build order, approach, commit/data guides
 data/                    Local cleaned MTRAG-UN working set

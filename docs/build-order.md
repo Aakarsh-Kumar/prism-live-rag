@@ -14,6 +14,15 @@
 - MTRAG-UN query text is sourced from
   `data/mtragun-human/generation_tasks/reference.jsonl` by joining
   `task_id == qrels.query-id`; Cloud and Govt coverage was verified at 100%.
+- Provider-backed synthesis is available behind `prism-rag run-demo --mode
+  provider`: DeepSeek handles optional query rewriting and evidence span extraction,
+  Groq handles final grounded answer generation, and deterministic extraction remains
+  the fallback.
+- Final-transcript refresh is wired into provider mode by default: the system keeps
+  the early provisional retrieval event for G2, then refreshes retrieval on the final
+  ASR result before answer synthesis.
+- Query expansion is factored as a retrieval component and applied before both dense
+  and sparse retrieval, so weighted RRF fuses comparable candidate pools.
 
 ## Next build sequence
 
@@ -32,13 +41,18 @@
    [llm-providers.md](llm-providers.md).**
 7. Multi-Intent Decomposer (LLM-prompted, capped at 2–4 sub-queries). Use the same
    latency-first live-path routing rule.
-8. Evidence span extraction + grounded generation + deterministic fallback — see
+8. Evidence span extraction + grounded generation + deterministic fallback — initial
+   provider-backed path exists; continue hardening prompts, telemetry, and streaming
+   token delivery. See
    [generation-grounding.md](generation-grounding.md) and [prompts.md](prompts.md).
    **Use stronger/slower models for evidence extraction when needed, and fast
    streaming models for final answer delivery.**
 9. Model-based Retrieval Controller (classifier) — for the required rule-based vs.
    model-based ablation.
-10. Late-refinement patch logic (delta update, not restart).
+10. Late-refinement patch logic (delta update, not restart) — final-transcript
+    refresh exists for single-turn simulated streaming; next expand to multi-turn
+    late-constraint patches.
 11. Evaluation harness — wire up against [evaluation-gates.md](evaluation-gates.md).
-12. Telemetry/observability — should already be logging from step 1 onward, not
-    bolted on at the end.
+12. Telemetry/observability — structured response fields are present, but full logs
+    and token-cost tracing are still open; complete this alongside the model-based
+    controller/eval harness, not as a final pass.

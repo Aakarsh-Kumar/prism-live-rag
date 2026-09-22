@@ -103,6 +103,12 @@ a suggestion:
 }
 ```
 
+`retrieval_events[].query` records the raw transcript chunk that triggered retrieval.
+`sub_queries[]` records the actual retrieval query after optional LLM rewriting.
+Deterministic corpus-vocabulary expansion is applied inside retrieval before both
+dense and sparse legs, so downstream metrics should use raw event queries for
+controller timing and sub-queries for retrieval debugging.
+
 ## Session refinement — patch, don't restart
 
 When a late-arriving constraint changes the answer:
