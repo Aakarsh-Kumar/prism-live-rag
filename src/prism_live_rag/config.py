@@ -46,6 +46,16 @@ def _env_bool(default: bool, *names: str) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _env_int(default: int, *names: str) -> int:
+    value = _env(*names)
+    if value is None:
+        return default
+    try:
+        return int(value)
+    except ValueError:
+        return default
+
+
 @dataclass(frozen=True)
 class Settings:
     root_dir: Path = ROOT
@@ -57,6 +67,9 @@ class Settings:
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     embedding_cache_dir: Path = ROOT / ".cache" / "fastembed"
     embedding_local_files_only: bool = False
+    embedding_device: str = "auto"
+    embedding_batch_size: int = 128
+    embedding_fixed_length: int = 512  # Fixed sequence length for stable CUDA memory usage (BGE-small max)
     rrf_k: int = 60
     sparse_weight: float = 0.35
     bm25_k1: float = 1.2
@@ -95,6 +108,13 @@ def load_settings() -> Settings:
         ),
         embedding_local_files_only=_env_bool(
             False, "EMBEDDING_LOCAL_FILES_ONLY", "EMBEDDING-LOCAL-FILES-ONLY"
+        ),
+        embedding_device=_env("EMBEDDING_DEVICE", "EMBEDDING-DEVICE") or "auto",
+        embedding_batch_size=_env_int(
+            128, "EMBEDDING_BATCH_SIZE", "EMBEDDING-BATCH-SIZE"
+        ),
+        embedding_fixed_length=_env_int(
+            512, "EMBEDDING_FIXED_LENGTH", "EMBEDDING-FIXED-LENGTH"
         ),
         provider_timeout_s=_env_float(12.0, "PROVIDER_TIMEOUT_S", "PROVIDER-TIMEOUT-S"),
         bm25_k1=_env_float(1.2, "BM25_K1", "BM25-K1"),
