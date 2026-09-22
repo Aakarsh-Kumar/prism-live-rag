@@ -5,6 +5,7 @@ import pytest
 from prism_live_rag.config import Settings
 from prism_live_rag.controller import TranscriptChunk, simulate_chunks
 from prism_live_rag.data import corpus_path
+from prism_live_rag.embeddings import build_encoder
 from prism_live_rag.models import Passage, RetrievedPassage
 from prism_live_rag.pipeline import StreamingRagPipeline
 from prism_live_rag.retrieval import HybridRetriever
@@ -21,7 +22,7 @@ def test_pipeline_returns_required_shape() -> None:
         settings.data_dir,
         settings.lancedb_dir,
         settings.table_name,
-        settings.embedding_dim,
+        build_encoder("hash"),
         settings.rrf_k,
         settings.sparse_weight,
         corpus_limit=300,

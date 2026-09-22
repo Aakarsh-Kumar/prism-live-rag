@@ -4,6 +4,7 @@ import pytest
 
 from prism_live_rag.config import Settings
 from prism_live_rag.data import corpus_path, load_query_tasks
+from prism_live_rag.embeddings import build_encoder
 from prism_live_rag.expansion import expand_query
 from prism_live_rag.retrieval import HybridRetriever
 
@@ -22,7 +23,7 @@ def test_sparse_retrieval_finds_toolchain_south_america_qrel() -> None:
         settings.data_dir,
         settings.lancedb_dir,
         settings.table_name,
-        settings.embedding_dim,
+        build_encoder("hash"),
         settings.rrf_k,
         settings.sparse_weight,
         bm25_k1=settings.bm25_k1,
