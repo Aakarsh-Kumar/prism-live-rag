@@ -55,14 +55,31 @@ class LanceIndex:
         self.dim = encoder.dim
         self.table_name = f"{table_name}__{encoder.name}"
 
-    def build(self, data_dir: Path, domains: list[str], limit: int | None = None, timeout_s: int = 300) -> int:
+    def build(
+        self,
+        data_dir: Path,
+        domains: list[str],
+        limit: int | None = None,
+        timeout_s: int = 300,
+        progress: bool = False,
+    ) -> int:
         import lancedb
 
         self.db_dir.mkdir(parents=True, exist_ok=True)
         passages: list[Passage] = []
         for domain in domains:
             passages.extend(iter_passages(data_dir, domain, limit=limit))
-        vectors = self.encoder.encode_passages([passage.text for passage in passages])
+        texts = [passage.text for passage in passages]
+        vectors: list[list[float]] = []
+        chunk = 20000
+        for start in range(0, len(texts), chunk):
+            vectors.extend(self.encoder.encode_passages(texts[start : start + chunk]))
+            if progress:
+                done = min(start + chunk, len(texts))
+                print(
+                    f"  embedded {done}/{len(texts)} passages on {self.encoder.device}",
+                    flush=True,
+                )
         rows = [
             {
                 "id": passage.id,

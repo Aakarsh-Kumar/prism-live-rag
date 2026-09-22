@@ -6,7 +6,7 @@ import json
 from .config import load_settings
 from .controller import simulate_chunks
 from .data import load_query_tasks, load_streams, save_streams, validate_domain
-from .embeddings import build_encoder
+from .embeddings import DEVICE_CHOICES, build_encoder
 from .evaluation import corpus_id_set, evaluate_provider, evaluate_retrieval, evaluate_streaming
 from .pipeline import StreamingRagPipeline
 from .providers import ProviderError, deepseek_client, groq_client, provider_status
@@ -21,6 +21,11 @@ def _build_encoder(settings, args: argparse.Namespace):
         cache_dir=settings.embedding_cache_dir,
         local_files_only=settings.embedding_local_files_only,
         hash_dim=settings.embedding_dim,
+        device=getattr(args, "embedding_device", None) or settings.embedding_device,
+        batch_size=getattr(args, "embedding_batch_size", None)
+        or settings.embedding_batch_size,
+        fixed_length=getattr(args, "embedding_fixed_length", None)
+        or settings.embedding_fixed_length,
     )
 
 
@@ -45,7 +50,13 @@ def cmd_index(args: argparse.Namespace) -> None:
     encoder = _build_encoder(settings, args)
     index = LanceIndex(settings.lancedb_dir, settings.table_name, encoder)
     try:
-        count = index.build(settings.data_dir, args.domains, limit=args.limit, timeout_s=args.timeout_s)
+        count = index.build(
+            settings.data_dir,
+            args.domains,
+            limit=args.limit,
+            timeout_s=args.timeout_s,
+            progress=True,
+        )
     except LanceDbTimeout as exc:
         raise SystemExit(
             f"{exc}. LanceDB is not responding in this Python runtime; run indexing "
@@ -58,6 +69,7 @@ def cmd_index(args: argparse.Namespace) -> None:
                 "indexed_passages": count,
                 "encoder": encoder.name,
                 "dim": encoder.dim,
+                "device": encoder.device,
                 "table": index.table_name,
                 "lancedb_dir": str(settings.lancedb_dir),
             },
@@ -281,6 +293,9 @@ def build_parser() -> argparse.ArgumentParser:
     index.add_argument("--timeout-s", type=int, default=300)
     index.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
     index.add_argument("--embedding-model", default=None)
+    index.add_argument("--embedding-device", choices=list(DEVICE_CHOICES), default=None)
+    index.add_argument("--embedding-batch-size", type=int, default=None)
+    index.add_argument("--embedding-fixed-length", type=int, default=None, help="Fixed sequence length for GPU memory stability (default: 512)")
     index.set_defaults(func=cmd_index)
 
     demo = sub.add_parser("run-demo")
@@ -291,6 +306,8 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--retrieval-leg", choices=list(RETRIEVAL_LEGS), default="hybrid")
     demo.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
     demo.add_argument("--embedding-model", default=None)
+    demo.add_argument("--embedding-device", choices=list(DEVICE_CHOICES), default=None)
+    demo.add_argument("--embedding-batch-size", type=int, default=None)
     demo.add_argument("--mode", choices=["deterministic", "provider"], default="deterministic")
     demo.add_argument("--rewrite-query", action="store_true", help="Use DeepSeek to rewrite the live utterance before retrieval.")
     demo.add_argument(
@@ -311,6 +328,8 @@ def build_parser() -> argparse.ArgumentParser:
     eval_parser.add_argument("--retrieval-leg", choices=list(RETRIEVAL_LEGS), default="hybrid")
     eval_parser.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
     eval_parser.add_argument("--embedding-model", default=None)
+    eval_parser.add_argument("--embedding-device", choices=list(DEVICE_CHOICES), default=None)
+    eval_parser.add_argument("--embedding-batch-size", type=int, default=None)
     eval_parser.add_argument("--rewrite-query", action="store_true", help="Use DeepSeek query rewriting during provider eval.")
     eval_parser.set_defaults(func=cmd_eval)
 
@@ -336,6 +355,8 @@ def build_parser() -> argparse.ArgumentParser:
     play.add_argument("--retrieval-leg", choices=list(RETRIEVAL_LEGS), default="hybrid")
     play.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
     play.add_argument("--embedding-model", default=None)
+    play.add_argument("--embedding-device", choices=list(DEVICE_CHOICES), default=None)
+    play.add_argument("--embedding-batch-size", type=int, default=None)
     play.add_argument("--mode", choices=["deterministic", "provider"], default="deterministic")
     play.add_argument("--rewrite-query", action="store_true")
     play.add_argument("--json", action="store_true")
