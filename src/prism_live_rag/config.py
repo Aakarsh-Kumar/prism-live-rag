@@ -39,6 +39,13 @@ def _env_float(default: float, *names: str) -> float:
         return default
 
 
+def _env_bool(default: bool, *names: str) -> bool:
+    value = _env(*names)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 @dataclass(frozen=True)
 class Settings:
     root_dir: Path = ROOT
@@ -46,6 +53,10 @@ class Settings:
     lancedb_dir: Path = ROOT / ".cache" / "lancedb"
     table_name: str = "passages"
     embedding_dim: int = 128
+    embedding_backend: str = "auto"
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
+    embedding_cache_dir: Path = ROOT / ".cache" / "fastembed"
+    embedding_local_files_only: bool = False
     rrf_k: int = 60
     sparse_weight: float = 0.35
     bm25_k1: float = 1.2
@@ -75,6 +86,16 @@ def load_settings() -> Settings:
         ),
         groq_model=_env("GROQ_MODEL", "GROQ-MODEL") or "openai/gpt-oss-120b",
         deepseek_model=_env("DEEPSEEK_MODEL", "DEEPSEEK-MODEL") or "deepseek-chat",
+        embedding_backend=_env("EMBEDDING_BACKEND", "EMBEDDING-BACKEND") or "auto",
+        embedding_model=_env("EMBEDDING_MODEL", "EMBEDDING-MODEL")
+        or "BAAI/bge-small-en-v1.5",
+        embedding_cache_dir=Path(
+            _env("EMBEDDING_CACHE_DIR", "EMBEDDING-CACHE-DIR")
+            or (ROOT / ".cache" / "fastembed")
+        ),
+        embedding_local_files_only=_env_bool(
+            False, "EMBEDDING_LOCAL_FILES_ONLY", "EMBEDDING-LOCAL-FILES-ONLY"
+        ),
         provider_timeout_s=_env_float(12.0, "PROVIDER_TIMEOUT_S", "PROVIDER-TIMEOUT-S"),
         bm25_k1=_env_float(1.2, "BM25_K1", "BM25-K1"),
         bm25_b=_env_float(0.75, "BM25_B", "BM25-B"),
