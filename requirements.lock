@@ -5,3 +5,8 @@ lancedb==0.39.0
 pyarrow==25.0.1
 requests==2.34.2
 pytest==9.1.1
+# Optional neural dense-retrieval path (EMBEDDING_BACKEND=auto|fastembed).
+# Installed by default here so Docker/scripts get semantic retrieval; the code
+# still falls back to hash embeddings if these are absent.
+fastembed==0.8.0
+onnxruntime==1.24.2

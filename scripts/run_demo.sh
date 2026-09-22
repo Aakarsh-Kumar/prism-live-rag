@@ -12,5 +12,5 @@ fi
 .venv/bin/python -m pip install --no-deps -e .
 .venv/bin/python scripts/fetch-corpus.py
 .venv/bin/prism-rag validate-data
-.venv/bin/prism-rag index
-.venv/bin/prism-rag run-demo --domain cloud --refine-on-final --use-dense
+.venv/bin/prism-rag index --embedding-backend auto
+.venv/bin/prism-rag run-demo --domain cloud --refine-on-final --use-dense --retrieval-leg hybrid
