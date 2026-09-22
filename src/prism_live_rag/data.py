@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .models import Passage, QueryTask
+from .stream import SimulatedStream
 
 
 DOMAIN_TO_COLLECTION = {"cloud": "ibmcloud", "govt": "govt"}
@@ -26,6 +27,32 @@ def qrels_path(data_dir: Path, domain: str) -> Path:
 
 def reference_path(data_dir: Path) -> Path:
     return data_dir / "mtragun-human" / "generation_tasks" / "reference.jsonl"
+
+
+def streams_path(data_dir: Path, domain: str) -> Path:
+    return data_dir / "simulated_streams" / f"{domain}.jsonl"
+
+
+def load_streams(data_dir: Path, domain: str) -> list[SimulatedStream]:
+    path = streams_path(data_dir, domain)
+    if not path.exists():
+        raise DatasetError(f"Missing simulated streams file: {path}")
+    streams: list[SimulatedStream] = []
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            if not line.strip():
+                continue
+            streams.append(SimulatedStream.from_dict(json.loads(line)))
+    return streams
+
+
+def save_streams(data_dir: Path, domain: str, streams: list[SimulatedStream]) -> Path:
+    path = streams_path(data_dir, domain)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        for stream in streams:
+            handle.write(json.dumps(stream.to_dict(), ensure_ascii=False) + "\n")
+    return path
 
 
 def iter_passages(data_dir: Path, domain: str, limit: int | None = None) -> Iterable[Passage]:
