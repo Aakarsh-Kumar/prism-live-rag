@@ -7,6 +7,7 @@ from statistics import mean
 from typing import Callable
 
 from .controller import RuleBasedRetrievalController, simulate_chunks
+from .controller_v2 import ProductionSemanticController
 from .data import iter_passages
 from .models import QueryTask, RagResponse
 
@@ -39,7 +40,7 @@ def evaluate_retrieval(
     search: Callable[[str], list[str]],
     *,
     limit: int,
-    controller: RuleBasedRetrievalController | None = None,
+    controller: RuleBasedRetrievalController | ProductionSemanticController | None = None,
 ) -> dict:
     controller = controller or RuleBasedRetrievalController()
     rows: list[RetrievalEvalRow] = []
@@ -194,7 +195,7 @@ def evaluate_streaming(
     }
 
 
-def _first_retrieval_is_early(query: str, controller: RuleBasedRetrievalController) -> bool:
+def _first_retrieval_is_early(query: str, controller: RuleBasedRetrievalController | ProductionSemanticController) -> bool:
     controller.reset()
     for chunk in simulate_chunks(query):
         if controller.decide(chunk) == "Retrieve":

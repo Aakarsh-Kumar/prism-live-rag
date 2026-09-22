@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from .controller import RuleBasedRetrievalController, TranscriptChunk
+from .controller import RuleBasedRetrievalController, SemanticRetrievalController, TranscriptChunk
+from .controller_v2 import ProductionSemanticController
 from .llm_steps import ChatClient, provider_synthesize_answer, rewrite_query
 from .models import RagResponse, RetrievalEvent
 from .providers import ProviderError
@@ -12,7 +13,7 @@ class StreamingRagPipeline:
     def __init__(
         self,
         retriever: HybridRetriever,
-        controller: RuleBasedRetrievalController | None = None,
+        controller: RuleBasedRetrievalController | SemanticRetrievalController | ProductionSemanticController | None = None,
         *,
         synthesis_mode: str = "deterministic",
         evidence_client: ChatClient | None = None,
