@@ -147,7 +147,55 @@ def corpus_id_set(data_dir, domain: str) -> set[str]:
     return {passage.id for passage in iter_passages(data_dir, domain)}
 
 
+def evaluate_streaming(
+    streams,
+    run_pipeline,
+    *,
+    limit: int | None = None,
+    min_words: int = 5,
+) -> dict:
+    rows: list[dict] = []
+    for stream in streams[:limit] if limit is not None else streams:
+        response = run_pipeline(list(stream.chunks))
+        first_retrieve = None
+        for event in response.retrieval_events:
+            if event.trigger == "provisional":
+                first_retrieve = event.timestamp_s
+                break
+        rows.append(
+            {
+                "stream_id": stream.stream_id,
+                "category": stream.category,
+                "stability_chunk_index": stream.stability_chunk_index,
+                "settling_ms": stream.settling_ms,
+                "first_retrieve_timestamp": first_retrieve,
+                "retrieval_events": len(response.retrieval_events),
+                "word_count": len(stream.chunks[-1].text.split()) if stream.chunks else 0,
+            }
+        )
+    eligible = [r for r in rows if r["category"] == "early_retrieval" and r["word_count"] >= min_words]
+    negatives = [r for r in rows if r["category"] == "no_retrieval"]
+    early_hits = [r for r in eligible if r["first_retrieve_timestamp"] is not None]
+    false_triggers = [r for r in negatives if r["retrieval_events"] > 0]
+    settling = [r["settling_ms"] for r in eligible if r["settling_ms"] >= 0]
+    return {
+        "mode": "streaming",
+        "tasks": len(rows),
+        "min_words": min_words,
+        "eligible": len(eligible),
+        "early_retrieval_rate": _ratio(len(early_hits), len(eligible)),
+        "false_trigger_rate": _ratio(len(false_triggers), len(negatives)),
+        "settling_ms": {
+            "mean": int(mean(settling)) if settling else 0,
+            "max": max(settling, default=0),
+        },
+        "misses": [r for r in eligible if r["first_retrieve_timestamp"] is None],
+        "false_triggers": [r["stream_id"] for r in false_triggers],
+    }
+
+
 def _first_retrieval_is_early(query: str, controller: RuleBasedRetrievalController) -> bool:
+    controller.reset()
     for chunk in simulate_chunks(query):
         if controller.decide(chunk) == "Retrieve":
             return not chunk.is_final

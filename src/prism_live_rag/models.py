@@ -40,6 +40,7 @@ class RetrievedPassage:
 class RagResponse:
     retrieval_events: list[RetrievalEvent] = field(default_factory=list)
     sub_queries: list[str] = field(default_factory=list)
+    decisions: list[dict] = field(default_factory=list)
     answer: str = ""
     citations: list[str] = field(default_factory=list)
     uncertainty: str | None = None
@@ -55,6 +56,7 @@ class RagResponse:
                 for event in self.retrieval_events
             ],
             "sub_queries": self.sub_queries,
+            "decisions": self.decisions,
             "answer": self.answer,
             "citations": self.citations,
             "uncertainty": self.uncertainty,

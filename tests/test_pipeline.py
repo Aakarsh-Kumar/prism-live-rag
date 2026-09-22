@@ -31,7 +31,7 @@ def test_pipeline_returns_required_shape() -> None:
     pipeline = StreamingRagPipeline(retriever)
     response = pipeline.run(simulate_chunks("I heard the toolchain is not available in South America."), "cloud")
     payload = response.to_dict()
-    assert set(payload) == {"retrieval_events", "sub_queries", "answer", "citations", "uncertainty"}
+    assert set(payload) == {"retrieval_events", "sub_queries", "decisions", "answer", "citations", "uncertainty"}
     assert payload["sub_queries"]
     assert payload["answer"]
 

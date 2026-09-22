@@ -33,8 +33,17 @@ class StreamingRagPipeline:
         retrieved_for = None
         passages = []
         active_query = None
+        self.controller.reset()
         for chunk in chunks:
             decision = self.controller.decide(chunk)
+            response.decisions.append(
+                {
+                    "timestamp_s": chunk.timestamp_s,
+                    "text": chunk.text,
+                    "decision": decision,
+                    "reason": self.controller.last_reason,
+                }
+            )
             if decision != "Retrieve" or retrieved_for == chunk.text:
                 continue
             retrieved_for = chunk.text
