@@ -3,7 +3,8 @@ services:
     build: .
     user: "${UID:-1000}:${GID:-1000}"
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
       PYTEST_ADDOPTS: "-o cache_dir=/app/.cache/pytest"
     volumes:

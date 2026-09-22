@@ -5,9 +5,12 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+COPY requirements.lock ./
+RUN pip install --no-cache-dir -r requirements.lock
+
 COPY pyproject.toml ./
 COPY src ./src
-RUN pip install --no-cache-dir -e ".[dev]"
+RUN pip install --no-cache-dir --no-deps -e .
 
 COPY AGENTS.md ./
 COPY docs ./docs
