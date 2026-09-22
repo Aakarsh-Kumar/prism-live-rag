@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .data import iter_passages
 from .embeddings import hash_embedding, tokenize
+from .expansion import expand_query
 from .models import Passage, RetrievedPassage
 
 
@@ -113,28 +114,33 @@ class LanceIndex:
 
 
 class SparseIndex:
-    def __init__(self, passages: list[Passage]) -> None:
+    def __init__(self, passages: list[Passage], bm25_k1: float = 1.2, bm25_b: float = 0.75) -> None:
         self.passages = passages
+        self.bm25_k1 = bm25_k1
+        self.bm25_b = bm25_b
         self.doc_terms = [Counter(tokenize(passage.title + " " + passage.text)) for passage in passages]
+        self.doc_lengths = [sum(terms.values()) for terms in self.doc_terms]
+        self.avg_doc_length = sum(self.doc_lengths) / max(len(self.doc_lengths), 1)
         self.doc_freq: Counter[str] = Counter()
         for terms in self.doc_terms:
             self.doc_freq.update(terms.keys())
 
     def search(self, query: str, domain: str, limit: int) -> list[Passage]:
-        query_terms = tokenize(query)
+        query_terms = Counter(tokenize(query))
         total_docs = max(len(self.passages), 1)
         scored: list[tuple[float, Passage]] = []
-        for passage, terms in zip(self.passages, self.doc_terms):
+        for passage, terms, doc_len in zip(self.passages, self.doc_terms, self.doc_lengths):
             if passage.domain != domain:
                 continue
             score = 0.0
-            doc_len = sum(terms.values()) or 1
-            for term in query_terms:
+            normalized_length = 1.0 - self.bm25_b + self.bm25_b * (doc_len / max(self.avg_doc_length, 1.0))
+            for term, query_tf in query_terms.items():
                 if term not in terms:
                     continue
-                tf = terms[term] / doc_len
-                idf = math.log((1 + total_docs) / (1 + self.doc_freq[term])) + 1.0
-                score += tf * idf
+                idf = math.log(1.0 + (total_docs - self.doc_freq[term] + 0.5) / (self.doc_freq[term] + 0.5))
+                term_tf = terms[term]
+                saturated_tf = (term_tf * (self.bm25_k1 + 1.0)) / (term_tf + self.bm25_k1 * normalized_length)
+                score += idf * saturated_tf * query_tf
             if score > 0:
                 scored.append((score, passage))
         scored.sort(key=lambda item: item[0], reverse=True)
@@ -185,6 +191,8 @@ class HybridRetriever:
         sparse_weight: float,
         corpus_limit: int | None = None,
         use_dense: bool = False,
+        bm25_k1: float = 1.2,
+        bm25_b: float = 0.75,
     ) -> None:
         self.data_dir = data_dir
         self.dense = LanceIndex(lancedb_dir, table_name, embedding_dim)
@@ -192,11 +200,12 @@ class HybridRetriever:
         passages = []
         for domain in ("cloud", "govt"):
             passages.extend(iter_passages(data_dir, domain, limit=corpus_limit))
-        self.sparse = SparseIndex(passages)
+        self.sparse = SparseIndex(passages, bm25_k1=bm25_k1, bm25_b=bm25_b)
         self.rrf_k = rrf_k
         self.sparse_weight = sparse_weight
 
     def search(self, query: str, domain: str, limit: int = 5, candidate_limit: int = 30) -> list[RetrievedPassage]:
-        dense = self.dense.search(query, domain, candidate_limit) if self.use_dense else []
-        sparse = self.sparse.search(query, domain, candidate_limit)
+        expanded_query = expand_query(query)
+        dense = self.dense.search(expanded_query, domain, candidate_limit) if self.use_dense else []
+        sparse = self.sparse.search(expanded_query, domain, candidate_limit)
         return weighted_rrf(dense, sparse, self.rrf_k, self.sparse_weight, limit)
