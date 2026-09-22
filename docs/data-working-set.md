@@ -30,7 +30,10 @@ Verified working-set coverage:
 
 ## Generated Files
 
-`prism-rag index` writes LanceDB tables under `.cache/lancedb/`. This directory is
+`prism-rag index` writes LanceDB tables under `.cache/lancedb/`. Table names are
+scoped by encoder (e.g. `passages__BAAI-bge-small-en-v1.5-384` for neural,
+`passages__hash128` for the fallback), so both indexes can coexist. The neural
+encoder also caches its model under `.cache/fastembed/`. Both directories are
 ignored and should be regenerated locally or through Docker.
 
 ## Committed Stream Fixtures

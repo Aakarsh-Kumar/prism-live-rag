@@ -41,6 +41,16 @@ model-based ablation):
   trained on auto-collected labels (which strategy actually worked best per query,
   not hand-annotated) to route to no-retrieval / single-step / iterative retrieval.
 
+**Current controllers in the repo** (the rule-based one is the runtime default):
+
+- `RuleBasedRetrievalController` (`controller.py`) — LocalAgreement-n prefix
+  stability; the Day-2 default.
+- `SemanticRetrievalController` (`controller.py`) — fires on embedding-similarity
+  stability across a window, with intent-drift re-firing.
+- `ProductionSemanticController` (`controller_v2.py`) — layered production build of
+  the semantic approach: input validation, circuit-breaker-wrapped embedding calls,
+  threshold checks, stability metrics, and health reporting.
+
 **Conceptual framing to reuse in your architecture brief:** treat this as three
 named sub-problems (from the "Stream RAG" paper) —
 *Trigger* (when to issue a new query), *Threads* (how many parallel query streams),

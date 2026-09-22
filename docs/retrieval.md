@@ -88,6 +88,23 @@ before tuning your reranker.
   returns; performance from including history typically saturates around 4–6 prior
   user turns, with assistant turns adding little further benefit.
 
+## Dense encoder backend
+
+The dense leg can use either of two encoders (selected via `--embedding-backend`
+or `EMBEDDING_BACKEND`):
+
+- `fastembed` — neural `BAAI/bge-small-en-v1.5` (384-dim, 512-token truncation).
+  Runs on CPU or GPU (`--embedding-device auto|cpu|cuda`); GPU needs
+  `onnxruntime-gpu[cuda,cudnn]` (see `scripts/setup_embeddings.sh`). Index tables
+  are scoped by encoder name so neural and hash indexes coexist.
+- `hash` — offline deterministic hashing fallback (128-dim). Never needs a model
+  download, used when fastembed is unavailable or GPU setup is pending.
+
+`auto` (default) prefers neural when fastembed is installed, else hash. Batch size
+and fixed sequence length are tunable (`EMBEDDING_BATCH_SIZE`,
+`EMBEDDING_FIXED_LENGTH`) — fixed-length padding keeps CUDA memory usage stable on
+small GPUs; adaptive batch-halving retries on out-of-memory.
+
 ## What NOT to over-invest in
 
 - A cross-encoder reranker helps (validated, use it) but is not where your biggest

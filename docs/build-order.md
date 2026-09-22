@@ -34,7 +34,19 @@
   `data/simulated_streams/` (106 cloud / 125 govt).
 - The rule-based controller uses intent stability (LocalAgreement-n) with
   presentation-only suppression and a logged reason per decision; the pipeline records
-  `decisions[]`.
+  `decisions[]`. A semantic controller pair was added alongside it:
+  `SemanticRetrievalController` (in `controller.py`) and the layered
+  `ProductionSemanticController` (in `controller_v2.py`, circuit-breaker-wrapped
+  embedding calls, validation, stability metrics). Both are accepted by
+  `pipeline.py` and `evaluation.py`, but the rule-based one remains the default
+  controller for demos and eval.
+- Neural dense embeddings are now a first-class backend: `--embedding-backend
+  auto|hash|fastembed` with `--embedding-device auto|cpu|cuda` and a tunable
+  `--embedding-batch-size` / `--embedding-fixed-length` (or `EMBEDDING_*` env
+  vars). GPU builds use `onnxruntime-gpu[cuda,cudnn]` via `scripts/setup_embeddings.sh`;
+  encoding uses length-bucketed batching, a fixed sequence length on GPU for
+  stable CUDA memory, and an adaptive batch-halving retry on out-of-memory. The
+  index build reports progress and the encoder/device in its output JSON.
 - `prism-rag eval --mode streaming` reports early-retrieval rate, false-trigger rate,
   and settling time; `prism-rag play-stream` renders a full stream trace. Measured:
   early-retrieval 0.97 cloud / 0.95 govt, false-trigger 0.0 both (eligible ≥5 words).
@@ -55,6 +67,10 @@
   `applied_delta`, so G5 has neither data nor pipeline support.
 - Telemetry is partial: `decisions[]` carries timestamps and reasons, but there is no
   per-stage latency, no token usage (the provider client discards it), and no trace log.
+- `SemanticRetrievalController` and `ProductionSemanticController` are written but
+  not yet benchmarked against the rule-based controller (`eval --mode streaming`
+  still defaults to the rule-based one); the rule-vs-model/rule-vs-semantic
+  controller ablation is still open.
 
 ## Next build sequence
 
@@ -69,7 +85,7 @@
    **Status: done** (`data.py`).
 4. LanceDB ingestion for passage-level Cloud/Govt corpus files — initial CLI exists;
    run it under Python 3.11-3.13 or Docker, then pass `--use-dense` in demos.
-   **Status: done.**
+   **Status: done** (encoder-based, GPU/CPU, batch & fixed-length tunable).
 5. Hybrid retrieval + weighted RRF, fixed-window chunking — initial deterministic
    dense+sparse baseline exists; see
    [retrieval.md](retrieval.md) for exact config to start from.
@@ -77,7 +93,8 @@
 6. Rule-based Retrieval Controller (heuristic Wait/Retrieve/Suppress). **Provider
    choice follows the latency-first live-path routing rule in
    [llm-providers.md](llm-providers.md).**
-   **Status: done** (intent-stability, Day 2).
+   **Status: done** (intent-stability, Day 2; semantic variants in
+   `controller.py`/`controller_v2.py` available but not the default).
 7. Multi-Intent Decomposer (LLM-prompted, capped at 2–4 sub-queries). Use the same
    latency-first live-path routing rule.
    **Status: NOT STARTED** — no `decomposer.py`; `sub_queries` is the single rewrite.

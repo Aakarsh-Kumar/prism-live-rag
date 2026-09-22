@@ -47,7 +47,10 @@ in `architecture.md` but are not yet implemented in code as of the 2026-09-22 au
    rule-based controller uses LocalAgreement-n: it fires only once the last `n`
    partials agree on a stable word prefix (`agreement_n=2`, `min_stable_words=3`), and
    suppresses presentation-only turns (e.g. "repeat that in two bullets"). Every
-   decision is logged with a timestamp and a reason.
+   decision is logged with a timestamp and a reason. A semantic controller pair
+   (`SemanticRetrievalController`, `ProductionSemanticController`) that fires on
+   embedding-similarity stability is also implemented and wired into the pipeline/eval
+   types, but the rule-based one is still the runtime default.
 2. **[planned] Multi-Intent Decomposer:** splits compound utterances into 2-4
    independent search queries when needed. Not yet built — there is no
    `decomposer.py`, and `RagResponse.sub_queries` is currently populated by the single
@@ -62,9 +65,13 @@ in `architecture.md` but are not yet implemented in code as of the 2026-09-22 au
    `version` or `applied_delta`, and the pipeline has no session object.
 
 The current implementation has two execution modes. The default deterministic mode
-uses hash embeddings for initial local dense indexing, in-memory sparse scoring,
-weighted RRF fusion, a rule-based streaming controller, and extraction-based
-synthesis. Provider mode is enabled with `prism-rag run-demo --mode provider
+uses a pluggable dense encoder: neural `BAAI/bge-small-en-v1.5` on CPU or GPU when
+fastembed is installed, deterministic hash embeddings as the offline fallback
+(`EMBEDDING_BACKEND=auto|hash|fastembed`, `EMBEDDING_DEVICE=auto|cpu|cuda`), plus
+in-memory sparse scoring, weighted RRF fusion, a rule-based streaming controller,
+and extraction-based synthesis. GPU index builds use length-bucketed batching, a
+fixed padded sequence length for stable CUDA memory, and adaptive batch-halving on
+out-of-memory. Provider mode is enabled with `prism-rag run-demo --mode provider
 --rewrite-query`: DeepSeek rewrites unstable utterances and extracts evidence spans,
 while Groq generates the final grounded answer from those spans. Provider failures
 or malformed JSON fall back to deterministic extraction, so local demos still run
