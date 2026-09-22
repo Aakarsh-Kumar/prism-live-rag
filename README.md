@@ -60,6 +60,14 @@ Build the LanceDB passage index:
 prism-rag index
 ```
 
+The dense encoder is `auto` (neural `BAAI/bge-small-en-v1.5` when fastembed is
+installed, deterministic hash fallback otherwise). Select backend, device, batch
+size, and fixed padded length with `--embedding-backend auto|hash|fastembed`,
+`--embedding-device auto|cpu|cuda`, `--embedding-batch-size`, and
+`--embedding-fixed-length` (or the `EMBEDDING_*` env vars). GPU builds need
+`onnxruntime-gpu[cuda,cudnn]`; `bash scripts/setup_embeddings.sh` installs it
+automatically when an NVIDIA GPU is present.
+
 If LanceDB hangs or times out on your host Python, run indexing in Docker:
 
 ```bash

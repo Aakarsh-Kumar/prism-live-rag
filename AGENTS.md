@@ -11,8 +11,18 @@ LanceDB is the vector database for local retrieval indexes.
 **Package manager / build commands:**
 
 - `pip install -e ".[dev]"` — install the Python package and test tools locally.
+- `bash scripts/setup_embeddings.sh` — detect a GPU and install the matching ONNX
+  Runtime build (`onnxruntime-gpu[cuda,cudnn]` on NVIDIA GPUs, CPU wheel otherwise).
+  `scripts/run_demo.sh` calls it automatically; the `neural-gpu` extra in
+  `pyproject.toml` is the manual equivalent.
 - `prism-rag validate-data` — verify Cloud/Govt corpus, qrels, and query joins.
 - `prism-rag index` — build the LanceDB passage index under `.cache/lancedb`.
+  The dense encoder is chosen by `--embedding-backend auto|hash|fastembed`
+  (auto prefers neural when fastembed is installed) and runs on the device from
+  `--embedding-device auto|cpu|cuda`. Batch size and fixed sequence length are
+  tunable via `--embedding-batch-size` / `--embedding-fixed-length` (or the
+  `EMBEDDING_*` env vars) — fixed-length padding keeps CUDA memory stable on
+  small GPUs during full-corpus builds.
 - `prism-rag run-demo --domain cloud` — run a deterministic streaming RAG demo.
 - `pytest` — run the Python test suite.
 - `docker compose up --build` — build and run the demo container for Gate G1 (runs as host UID; files written under the mounted `.cache` stay host-owned, not root).
@@ -20,7 +30,10 @@ LanceDB is the vector database for local retrieval indexes.
 If a host `prism-rag index` fails with `Permission denied` (or LanceDB hangs at connect), a previous `docker compose run ... prism-rag index` left a root-owned `.cache/lancedb`; clear it with `sudo rm -rf .cache/lancedb` and rebuild.
 
 Preferred `.env` names are `GROQ_API_KEY` and `DEEPSEEK_API_KEY`. The current
-loader also accepts the dashed aliases already used locally.
+loader also accepts the dashed aliases already used locally. Embedding settings
+honor `EMBEDDING_BACKEND`, `EMBEDDING_MODEL`, `EMBEDDING_DEVICE`,
+`EMBEDDING_BATCH_SIZE`, `EMBEDDING_FIXED_LENGTH`, `EMBEDDING_CACHE_DIR` and
+`EMBEDDING_LOCAL_FILES_ONLY` (plus dashed aliases).
 
 Read the relevant doc below before implementing that part of the system. Each one
 encodes findings from actual SemEval-2026 competition system papers, not general RAG
@@ -40,6 +53,7 @@ practice — don't substitute general knowledge where a specific doc exists.
 - [Risks & open problems](docs/risks-and-open-problems.md) — what's genuinely unsolved; read before calling anything "done"
 - [Dataset & augmentation](docs/dataset-and-augmentation.md) — which corpus, why, how to extend it
 - [LLM providers](docs/llm-providers.md) — latency-first routing for live-path stages, strongest affordable models for offline quality stages
+- [Agent handoff](docs/agent-handoff.md) — working plan and progress ledger for the build
 
 Full research map with citations: `streaming-rag-research-map.md` (shared team
 artifact, lives outside this repo).
