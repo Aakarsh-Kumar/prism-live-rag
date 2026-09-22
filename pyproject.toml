@@ -21,6 +21,15 @@ neural = [
   "fastembed==0.8.0",
   "onnxruntime==1.24.2",
 ]
+# GPU build. onnxruntime and onnxruntime-gpu ship the same module, so install
+# one or the other, never both. The [cuda,cudnn] extras are required for CUDA
+# 12 support (the bare wheel bundles no NVIDIA libraries). Prefer
+# `scripts/setup_embeddings.sh`, which detects the GPU and swaps the CPU wheel
+# out cleanly; this extra installs ~1 GB of CUDA/cuDNN wheels.
+neural-gpu = [
+  "fastembed==0.8.0",
+  "onnxruntime-gpu[cuda,cudnn]==1.24.4",
+]
 
 [project.scripts]
 prism-rag = "prism_live_rag.cli:main"
