@@ -34,15 +34,39 @@ def extract_json_object(text: str) -> dict:
     if fenced:
         stripped = fenced.group(1)
     elif not stripped.startswith("{"):
-        start = stripped.find("{")
-        end = stripped.rfind("}")
-        if start == -1 or end == -1 or end <= start:
-            raise ProviderError("Provider did not return a JSON object")
-        stripped = stripped[start : end + 1]
+        stripped = _first_balanced_json_object(stripped)
     payload = json.loads(stripped)
     if not isinstance(payload, dict):
         raise ProviderError("Provider JSON response is not an object")
     return payload
+
+
+def _first_balanced_json_object(text: str) -> str:
+    start = text.find("{")
+    if start == -1:
+        raise ProviderError("Provider did not return a JSON object")
+    depth = 0
+    in_string = False
+    escaped = False
+    for offset, char in enumerate(text[start:], start=start):
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\":
+            escaped = in_string
+            continue
+        if char == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start : offset + 1]
+    raise ProviderError("Provider did not return a balanced JSON object")
 
 
 def rewrite_query(client: ChatClient, transcript_text: str) -> str:
@@ -78,6 +102,32 @@ def extract_spans_with_provider(
 ) -> list[EvidenceSpan]:
     if not passages:
         return []
+    try:
+        return _extract_spans_once(client, query, passages, max_spans)
+    except (ProviderError, json.JSONDecodeError) as exc:
+        if not _is_provider_parse_error(exc):
+            raise
+        return _extract_spans_once(client, query, passages, max_spans)
+
+
+def _is_provider_parse_error(exc: Exception) -> bool:
+    if isinstance(exc, json.JSONDecodeError):
+        return True
+    message = str(exc)
+    return (
+        "JSON" in message
+        or "balanced JSON" in message
+        or "extracted_spans" in message
+        or "did not return" in message
+    )
+
+
+def _extract_spans_once(
+    client: ChatClient,
+    query: str,
+    passages: list[RetrievedPassage],
+    max_spans: int,
+) -> list[EvidenceSpan]:
     indexed_passages = []
     id_by_index: dict[str, str] = {}
     valid_ids = set()
@@ -154,6 +204,10 @@ def provider_synthesize_answer(
         return answer, citations, uncertainty or "Provider clients are not configured; used deterministic fallback."
     try:
         spans = extract_spans_with_provider(evidence_client, query, passages)
+        if not spans:
+            retry_query = rewrite_query(evidence_client, query)
+            if retry_query != query:
+                spans = extract_spans_with_provider(evidence_client, retry_query, passages)
         if not spans:
             return (
                 "I do not have enough information in the retrieved corpus to answer that.",

@@ -71,7 +71,8 @@ def groq_client(settings: Settings) -> OpenAICompatibleChatClient:
     return OpenAICompatibleChatClient(
         api_key=settings.groq_api_key,
         base_url="https://api.groq.com/openai/v1",
-        default_model="llama-3.3-70b-versatile",
+        default_model=settings.groq_model,
+        timeout_s=settings.provider_timeout_s,
     )
 
 
@@ -81,5 +82,6 @@ def deepseek_client(settings: Settings) -> OpenAICompatibleChatClient:
     return OpenAICompatibleChatClient(
         api_key=settings.deepseek_api_key,
         base_url="https://api.deepseek.com",
-        default_model="deepseek-chat",
+        default_model=settings.deepseek_model,
+        timeout_s=settings.provider_timeout_s,
     )

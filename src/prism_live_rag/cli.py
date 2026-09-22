@@ -56,6 +56,8 @@ def cmd_run_demo(args: argparse.Namespace) -> None:
         settings.sparse_weight,
         corpus_limit=args.corpus_limit,
         use_dense=args.use_dense,
+        bm25_k1=settings.bm25_k1,
+        bm25_b=settings.bm25_b,
     )
     evidence_client = None
     generation_client = None
@@ -71,6 +73,7 @@ def cmd_run_demo(args: argparse.Namespace) -> None:
         evidence_client=evidence_client,
         generation_client=generation_client,
         enable_query_rewrite=args.rewrite_query,
+        refine_on_final=args.refine_on_final or args.mode == "provider",
     )
     try:
         response = pipeline.run(simulate_chunks(task.query), domain=args.domain)
@@ -102,6 +105,11 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--use-dense", action="store_true", help="Use LanceDB dense search; run `prism-rag index` first.")
     demo.add_argument("--mode", choices=["deterministic", "provider"], default="deterministic")
     demo.add_argument("--rewrite-query", action="store_true", help="Use DeepSeek to rewrite the live utterance before retrieval.")
+    demo.add_argument(
+        "--refine-on-final",
+        action="store_true",
+        help="Keep early retrieval, then refresh retrieval when the final transcript arrives.",
+    )
     demo.set_defaults(func=cmd_run_demo)
     return parser
 

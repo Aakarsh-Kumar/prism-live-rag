@@ -29,6 +29,16 @@ def _env(*names: str) -> str | None:
     return None
 
 
+def _env_float(default: float, *names: str) -> float:
+    value = _env(*names)
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except ValueError:
+        return default
+
+
 @dataclass(frozen=True)
 class Settings:
     root_dir: Path = ROOT
@@ -38,9 +48,14 @@ class Settings:
     embedding_dim: int = 128
     rrf_k: int = 60
     sparse_weight: float = 0.35
+    bm25_k1: float = 1.2
+    bm25_b: float = 0.75
     top_k: int = 5
     groq_api_key: str | None = None
     deepseek_api_key: str | None = None
+    groq_model: str = "openai/gpt-oss-120b"
+    deepseek_model: str = "deepseek-chat"
+    provider_timeout_s: float = 12.0
 
     @property
     def has_groq(self) -> bool:
@@ -58,4 +73,9 @@ def load_settings() -> Settings:
         deepseek_api_key=_env(
             "DEEPSEEK_API_KEY", "DEEPSEEK-API-KEY"
         ),
+        groq_model=_env("GROQ_MODEL", "GROQ-MODEL") or "openai/gpt-oss-120b",
+        deepseek_model=_env("DEEPSEEK_MODEL", "DEEPSEEK-MODEL") or "deepseek-chat",
+        provider_timeout_s=_env_float(12.0, "PROVIDER_TIMEOUT_S", "PROVIDER-TIMEOUT-S"),
+        bm25_k1=_env_float(1.2, "BM25_K1", "BM25-K1"),
+        bm25_b=_env_float(0.75, "BM25_B", "BM25-B"),
     )
