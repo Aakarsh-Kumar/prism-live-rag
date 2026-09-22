@@ -6,11 +6,22 @@ import json
 from .config import load_settings
 from .controller import simulate_chunks
 from .data import load_query_tasks, load_streams, save_streams, validate_domain
+from .embeddings import build_encoder
 from .evaluation import corpus_id_set, evaluate_provider, evaluate_retrieval, evaluate_streaming
 from .pipeline import StreamingRagPipeline
 from .providers import ProviderError, deepseek_client, groq_client, provider_status
-from .retrieval import HybridRetriever, LanceDbTimeout, LanceIndex
+from .retrieval import RETRIEVAL_LEGS, HybridRetriever, LanceDbTimeout, LanceIndex
 from .stream import generate_streams
+
+
+def _build_encoder(settings, args: argparse.Namespace):
+    return build_encoder(
+        getattr(args, "embedding_backend", None) or settings.embedding_backend,
+        model=getattr(args, "embedding_model", None) or settings.embedding_model,
+        cache_dir=settings.embedding_cache_dir,
+        local_files_only=settings.embedding_local_files_only,
+        hash_dim=settings.embedding_dim,
+    )
 
 
 def cmd_validate(args: argparse.Namespace) -> None:
@@ -31,7 +42,8 @@ def cmd_validate(args: argparse.Namespace) -> None:
 
 def cmd_index(args: argparse.Namespace) -> None:
     settings = load_settings()
-    index = LanceIndex(settings.lancedb_dir, settings.table_name, settings.embedding_dim)
+    encoder = _build_encoder(settings, args)
+    index = LanceIndex(settings.lancedb_dir, settings.table_name, encoder)
     try:
         count = index.build(settings.data_dir, args.domains, limit=args.limit, timeout_s=args.timeout_s)
     except LanceDbTimeout as exc:
@@ -40,7 +52,18 @@ def cmd_index(args: argparse.Namespace) -> None:
             "through Docker (`docker compose run --rm app prism-rag index`) or a "
             "known-good Python 3.11-3.13 environment."
         ) from exc
-    print(json.dumps({"indexed_passages": count, "lancedb_dir": str(settings.lancedb_dir)}, indent=2))
+    print(
+        json.dumps(
+            {
+                "indexed_passages": count,
+                "encoder": encoder.name,
+                "dim": encoder.dim,
+                "table": index.table_name,
+                "lancedb_dir": str(settings.lancedb_dir),
+            },
+            indent=2,
+        )
+    )
 
 
 def cmd_run_demo(args: argparse.Namespace) -> None:
@@ -53,11 +76,12 @@ def cmd_run_demo(args: argparse.Namespace) -> None:
         settings.data_dir,
         settings.lancedb_dir,
         settings.table_name,
-        settings.embedding_dim,
+        _build_encoder(settings, args),
         settings.rrf_k,
         settings.sparse_weight,
         corpus_limit=args.corpus_limit,
         use_dense=args.use_dense,
+        retrieval_leg=args.retrieval_leg,
         bm25_k1=settings.bm25_k1,
         bm25_b=settings.bm25_b,
     )
@@ -91,11 +115,12 @@ def _build_retriever(settings, args: argparse.Namespace) -> HybridRetriever:
         settings.data_dir,
         settings.lancedb_dir,
         settings.table_name,
-        settings.embedding_dim,
+        _build_encoder(settings, args),
         settings.rrf_k,
         settings.sparse_weight,
         corpus_limit=args.corpus_limit,
         use_dense=args.use_dense,
+        retrieval_leg=getattr(args, "retrieval_leg", "hybrid"),
         bm25_k1=settings.bm25_k1,
         bm25_b=settings.bm25_b,
     )
@@ -254,6 +279,8 @@ def build_parser() -> argparse.ArgumentParser:
     index.add_argument("--domains", nargs="+", default=["cloud", "govt"])
     index.add_argument("--limit", type=int, default=None)
     index.add_argument("--timeout-s", type=int, default=300)
+    index.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
+    index.add_argument("--embedding-model", default=None)
     index.set_defaults(func=cmd_index)
 
     demo = sub.add_parser("run-demo")
@@ -261,6 +288,9 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--task-index", type=int, default=0)
     demo.add_argument("--corpus-limit", type=int, default=5000)
     demo.add_argument("--use-dense", action="store_true", help="Use LanceDB dense search; run `prism-rag index` first.")
+    demo.add_argument("--retrieval-leg", choices=list(RETRIEVAL_LEGS), default="hybrid")
+    demo.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
+    demo.add_argument("--embedding-model", default=None)
     demo.add_argument("--mode", choices=["deterministic", "provider"], default="deterministic")
     demo.add_argument("--rewrite-query", action="store_true", help="Use DeepSeek to rewrite the live utterance before retrieval.")
     demo.add_argument(
@@ -278,6 +308,9 @@ def build_parser() -> argparse.ArgumentParser:
     eval_parser.add_argument("--candidate-limit", type=int, default=30)
     eval_parser.add_argument("--corpus-limit", type=int, default=None)
     eval_parser.add_argument("--use-dense", action="store_true", help="Use LanceDB dense search; run `prism-rag index` first.")
+    eval_parser.add_argument("--retrieval-leg", choices=list(RETRIEVAL_LEGS), default="hybrid")
+    eval_parser.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
+    eval_parser.add_argument("--embedding-model", default=None)
     eval_parser.add_argument("--rewrite-query", action="store_true", help="Use DeepSeek query rewriting during provider eval.")
     eval_parser.set_defaults(func=cmd_eval)
 
@@ -300,6 +333,9 @@ def build_parser() -> argparse.ArgumentParser:
     play.add_argument("--task-index", type=int, default=0)
     play.add_argument("--corpus-limit", type=int, default=5000)
     play.add_argument("--use-dense", action="store_true")
+    play.add_argument("--retrieval-leg", choices=list(RETRIEVAL_LEGS), default="hybrid")
+    play.add_argument("--embedding-backend", choices=["auto", "hash", "fastembed"], default=None)
+    play.add_argument("--embedding-model", default=None)
     play.add_argument("--mode", choices=["deterministic", "provider"], default="deterministic")
     play.add_argument("--rewrite-query", action="store_true")
     play.add_argument("--json", action="store_true")

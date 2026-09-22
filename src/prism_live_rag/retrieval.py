@@ -7,9 +7,12 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from .data import iter_passages
-from .embeddings import hash_embedding, tokenize
+from .embeddings import Encoder, tokenize
 from .expansion import expand_query
 from .models import Passage, RetrievedPassage
+
+
+RETRIEVAL_LEGS = ("hybrid", "sparse", "dense")
 
 
 class LanceDbTimeout(RuntimeError):
@@ -43,28 +46,34 @@ def timeout_after(seconds: int, label: str):
 
 
 class LanceIndex:
-    def __init__(self, db_dir: Path, table_name: str, embedding_dim: int) -> None:
+    """LanceDB dense index. The table name is scoped by the encoder so that
+    different backends/dimensions can coexist without silently colliding."""
+
+    def __init__(self, db_dir: Path, table_name: str, encoder: Encoder) -> None:
         self.db_dir = db_dir
-        self.table_name = table_name
-        self.embedding_dim = embedding_dim
+        self.encoder = encoder
+        self.dim = encoder.dim
+        self.table_name = f"{table_name}__{encoder.name}"
 
     def build(self, data_dir: Path, domains: list[str], limit: int | None = None, timeout_s: int = 300) -> int:
         import lancedb
 
         self.db_dir.mkdir(parents=True, exist_ok=True)
-        rows = []
+        passages: list[Passage] = []
         for domain in domains:
-            for passage in iter_passages(data_dir, domain, limit=limit):
-                rows.append(
-                    {
-                        "id": passage.id,
-                        "domain": passage.domain,
-                        "title": passage.title,
-                        "url": passage.url,
-                        "text": passage.text,
-                        "vector": hash_embedding(passage.text, self.embedding_dim),
-                    }
-                )
+            passages.extend(iter_passages(data_dir, domain, limit=limit))
+        vectors = self.encoder.encode_passages([passage.text for passage in passages])
+        rows = [
+            {
+                "id": passage.id,
+                "domain": passage.domain,
+                "title": passage.title,
+                "url": passage.url,
+                "text": passage.text,
+                "vector": vector,
+            }
+            for passage, vector in zip(passages, vectors)
+        ]
         with timeout_after(timeout_s, "LanceDB index build"):
             if not _writable_or_absent(self.db_dir):
                 raise LanceDbTimeout(
@@ -96,7 +105,7 @@ class LanceIndex:
             db = lancedb.connect(str(self.db_dir))
             table = db.open_table(self.table_name)
             rows = (
-                table.search(hash_embedding(query, self.embedding_dim))
+                table.search(self.encoder.encode_query(query))
                 .where(f"domain = '{domain}'", prefilter=True)
                 .limit(limit)
                 .to_list()
@@ -186,17 +195,22 @@ class HybridRetriever:
         data_dir: Path,
         lancedb_dir: Path,
         table_name: str,
-        embedding_dim: int,
+        encoder: Encoder,
         rrf_k: int,
         sparse_weight: float,
         corpus_limit: int | None = None,
         use_dense: bool = False,
+        retrieval_leg: str = "hybrid",
         bm25_k1: float = 1.2,
         bm25_b: float = 0.75,
     ) -> None:
         self.data_dir = data_dir
-        self.dense = LanceIndex(lancedb_dir, table_name, embedding_dim)
+        self.encoder = encoder
+        self.dense = LanceIndex(lancedb_dir, table_name, encoder)
         self.use_dense = use_dense
+        if retrieval_leg not in RETRIEVAL_LEGS:
+            raise ValueError(f"Unknown retrieval leg: {retrieval_leg!r}")
+        self.retrieval_leg = retrieval_leg
         passages = []
         for domain in ("cloud", "govt"):
             passages.extend(iter_passages(data_dir, domain, limit=corpus_limit))
@@ -206,6 +220,16 @@ class HybridRetriever:
 
     def search(self, query: str, domain: str, limit: int = 5, candidate_limit: int = 30) -> list[RetrievedPassage]:
         expanded_query = expand_query(query)
-        dense = self.dense.search(expanded_query, domain, candidate_limit) if self.use_dense else []
-        sparse = self.sparse.search(expanded_query, domain, candidate_limit)
+        dense: list[Passage] = []
+        sparse: list[Passage] = []
+        if self.retrieval_leg in ("hybrid", "sparse"):
+            sparse = self.sparse.search(expanded_query, domain, candidate_limit)
+        if self.retrieval_leg in ("hybrid", "dense"):
+            if self.use_dense and self.dense.exists():
+                dense = self.dense.search(expanded_query, domain, candidate_limit)
+            elif self.retrieval_leg == "dense":
+                raise RuntimeError(
+                    f"Dense retrieval requested but index table '{self.dense.table_name}' is "
+                    "missing. Run `prism-rag index --embedding-backend <backend>` first."
+                )
         return weighted_rrf(dense, sparse, self.rrf_k, self.sparse_weight, limit)
