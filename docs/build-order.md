@@ -23,6 +23,10 @@
   ASR result before answer synthesis.
 - Query expansion is factored as a retrieval component and applied before both dense
   and sparse retrieval, so weighted RRF fuses comparable candidate pools.
+- Evaluation harness v1 is available via `prism-rag eval`: retrieval mode measures
+  recall@k/MRR/early-retrieval rate without API calls, and provider mode runs a
+  bounded Groq+DeepSeek smoke eval with citation validity, qrel citation hit rate,
+  abstention rate, and latency.
 
 ## Next build sequence
 
@@ -52,7 +56,8 @@
 10. Late-refinement patch logic (delta update, not restart) — final-transcript
     refresh exists for single-turn simulated streaming; next expand to multi-turn
     late-constraint patches.
-11. Evaluation harness — wire up against [evaluation-gates.md](evaluation-gates.md).
+11. Evaluation harness — v1 exists for G2/G4 smoke metrics; next expand to G3/G5,
+    dense-vs-hybrid ablations, and saved report artifacts.
 12. Telemetry/observability — structured response fields are present, but full logs
     and token-cost tracing are still open; complete this alongside the model-based
     controller/eval harness, not as a final pass.

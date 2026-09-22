@@ -6,6 +6,7 @@ import json
 from .config import load_settings
 from .controller import simulate_chunks
 from .data import load_query_tasks, validate_domain
+from .evaluation import corpus_id_set, evaluate_provider, evaluate_retrieval
 from .pipeline import StreamingRagPipeline
 from .providers import ProviderError, deepseek_client, groq_client, provider_status
 from .retrieval import HybridRetriever, LanceDbTimeout, LanceIndex
@@ -84,6 +85,62 @@ def cmd_run_demo(args: argparse.Namespace) -> None:
     print(json.dumps(response.to_dict(), indent=2))
 
 
+def _build_retriever(settings, args: argparse.Namespace) -> HybridRetriever:
+    return HybridRetriever(
+        settings.data_dir,
+        settings.lancedb_dir,
+        settings.table_name,
+        settings.embedding_dim,
+        settings.rrf_k,
+        settings.sparse_weight,
+        corpus_limit=args.corpus_limit,
+        use_dense=args.use_dense,
+        bm25_k1=settings.bm25_k1,
+        bm25_b=settings.bm25_b,
+    )
+
+
+def cmd_eval(args: argparse.Namespace) -> None:
+    settings = load_settings()
+    tasks = load_query_tasks(settings.data_dir, args.domain)
+    retriever = _build_retriever(settings, args)
+    if args.mode == "retrieval":
+        result = evaluate_retrieval(
+            tasks,
+            lambda query: [
+                hit.passage.id
+                for hit in retriever.search(query, args.domain, limit=args.top_k, candidate_limit=args.candidate_limit)
+            ],
+            limit=args.max_tasks,
+        )
+        result["domain"] = args.domain
+        result["top_k"] = args.top_k
+        print(json.dumps(result, indent=2))
+        return
+
+    try:
+        evidence_client = deepseek_client(settings)
+        generation_client = groq_client(settings)
+    except ProviderError as exc:
+        raise SystemExit(f"Provider eval requires configured providers: {exc}") from exc
+    pipeline = StreamingRagPipeline(
+        retriever,
+        synthesis_mode="provider",
+        evidence_client=evidence_client,
+        generation_client=generation_client,
+        enable_query_rewrite=args.rewrite_query,
+        refine_on_final=True,
+    )
+    result = evaluate_provider(
+        tasks,
+        lambda query: pipeline.run(simulate_chunks(query), domain=args.domain),
+        corpus_ids=corpus_id_set(settings.data_dir, args.domain),
+        limit=args.max_tasks,
+    )
+    result["domain"] = args.domain
+    print(json.dumps(result, indent=2))
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="prism-rag")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -111,6 +168,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Keep early retrieval, then refresh retrieval when the final transcript arrives.",
     )
     demo.set_defaults(func=cmd_run_demo)
+
+    eval_parser = sub.add_parser("eval")
+    eval_parser.add_argument("--domain", choices=["cloud", "govt"], default="cloud")
+    eval_parser.add_argument("--mode", choices=["retrieval", "provider"], default="retrieval")
+    eval_parser.add_argument("--max-tasks", type=int, default=10)
+    eval_parser.add_argument("--top-k", type=int, default=5)
+    eval_parser.add_argument("--candidate-limit", type=int, default=30)
+    eval_parser.add_argument("--corpus-limit", type=int, default=None)
+    eval_parser.add_argument("--use-dense", action="store_true", help="Use LanceDB dense search; run `prism-rag index` first.")
+    eval_parser.add_argument("--rewrite-query", action="store_true", help="Use DeepSeek query rewriting during provider eval.")
+    eval_parser.set_defaults(func=cmd_eval)
     return parser
 
 

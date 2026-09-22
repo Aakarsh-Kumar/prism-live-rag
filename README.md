@@ -65,6 +65,18 @@ To test final-transcript refresh without spending API calls:
 prism-rag run-demo --domain cloud --refine-on-final
 ```
 
+Run offline retrieval/controller evaluation:
+
+```bash
+prism-rag eval --domain cloud --mode retrieval --max-tasks 50
+```
+
+Run a bounded real-provider smoke evaluation:
+
+```bash
+prism-rag eval --domain cloud --mode provider --max-tasks 5 --rewrite-query
+```
+
 Run tests after installing dev dependencies:
 
 ```bash

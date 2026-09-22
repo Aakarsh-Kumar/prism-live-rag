@@ -81,6 +81,12 @@ staging rule maps region wording such as "South America" to IBM Cloud corpus tok
 such as `sao paulo` and `br-sao`, then feeds the expanded query to both dense and
 sparse retrieval legs before weighted RRF.
 
+Evaluation is exposed as a first-class CLI path. `prism-rag eval --mode retrieval`
+runs offline recall@k, MRR, and early-retrieval measurements. `--mode provider`
+executes bounded Groq+DeepSeek smoke tests and reports citation validity,
+qrel-citation hits, abstentions, and latency so the real deliverable path is measured
+instead of only mocked.
+
 The live path is latency-first. The controller, decomposer, and final streamed answer
 should use the fastest acceptable provider to minimize time-to-first-token. Slower,
 stronger models can be reserved for non-streaming quality work such as query
