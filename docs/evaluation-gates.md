@@ -1,116 +1,44 @@
 # Evaluation Gates Reference
 
-Samsung's six acceptance gates, what they require, and how to build toward each.
+Samsung's requirements come from [guide.md](../guide.md). This is an internal,
+version-specific status check refreshed 30 September 2026, not a Samsung
+acceptance decision. Historical measurements do not establish that later code
+passes the same gate.
 
-## G1 — Reproducibility (Pass/Fail)
+| Gate | Requirement | Current evidence and limit |
+|---|---|---|
+| G1 | One-command clean container launch and unattended replay | Bundled CPU Compose launched without keys/GPU/host assets; final image completed two queries with networking disabled. The CPU audit completed 200 runs. Linux AMD64 development hardware was exercised, not an arbitrary judge PC. |
+| G2 | Retrieval before final transcript on ≥80% of eligible queries, low false triggers | Latest CPU audit: actual search dispatch before final delivery in 118/130 answerable/partial cases (90.77%). Negative controller fixtures are a separate small set, not proof of robust natural false-trigger performance. |
+| G3 | Identify/isolate ≥70% of compound utterances | Saved owner-reviewed 100-compound/100-single provider run: 92/100 compounds matched under a one-to-one lexical equivalence metric. Latest outcomes reconstruct 351 successful decomposition checkpoints; these are not a raw billing/call ledger or independent semantic judgments. |
+| G4 | ≥85% citation support and zero fabricated document IDs; internal faithfulness target ≥80% | Historical 200-query dashboard audit: 98.64% mean judged faithfulness on 92 factual responses, with 108 abstentions excluded, and lexical citation overlap 99.94%. Latest CPU run has zero invalid IDs but 59/100 answerable cases uncertain/uncited. No fresh latest-release 200-query semantic pass; answer quality remains open. |
+| G5 | Late constraints update answers without losing unaffected state or restarting the original query | Versioned sessions, delta queries and presentation-only suppression implemented. Nine checks passed on one real corpus case, plus historical controlled tests. Broader restrictive-refinement accuracy remains unverified. |
+| G6 | 100% execution trace coverage with times, triggers, citations, versions and token cost | Latest CPU audit: 200/200 exact execution IDs validated. Provider-free usage/cost is zero; real provider traces have nonzero usage and estimated—not invoiced—cost. |
 
-Requirement: container launches via a single command on a clean machine; automated
-replay suite completes without manual intervention.
+## Evidence protocol
 
-- Build `docker-compose up` (or equivalent single-command runner) from day one, not
-  at the end. This is infrastructure debt that compounds if deferred.
-- Pin all dependency versions (lockfiles), don't rely on floating versions.
+See [benchmark report](benchmark-evaluation-report.md) for retrieval baseline,
+two retrieval ablations, controller ablation, edge-failure analysis and source
+artifact names. Raw generated results are shipped in submission bundles, not
+tracked as large Git blobs.
 
-**Status: done.** `.env` is optional in `docker-compose.yml`, `requirements.lock` pins
-direct deps, and `scripts/run_demo.sh` / `scripts/g1_smoke.sh` provide the single
-command. Clean-volume `docker compose up` verification is still pending (Day 5b).
+- Timing uses observed corpus search dispatch versus actual final-chunk delivery.
+  Simulated transcript timestamps alone are not runtime concurrency proof.
+- Trace validation filters append-only logs by exact expected execution IDs and
+  checks missing, duplicate and malformed rows.
+- Citation IDs must come from retrieved evidence. Valid IDs alone do not prove
+  that factual assertions are supported.
+- Citation overlap and answer-shape matches are explicitly proxies. Report
+  answerable abstention, unsupported negative answers and the factual-response
+  denominator alongside faithfulness.
+- G3 reviewed compound fixtures are separate from the 200 dashboard query set;
+  category names/rule previews are not a human count of multi-intent questions.
+- Real provider runs use server-side Cerebras GPT-OSS-120B at five requests/minute.
+  Unit tests and CI do not make provider requests.
+- Input is interval-delivered simulated ASR text. Answer output is not token-streamed.
 
-## G2 — Early Retrieval (≥ 80% of eligible queries)
+## Remaining acceptance work
 
-Requirement: retrieval commences before final transcript completion on held-out
-streaming prompts, maintaining low false-trigger rates on no-retrieval cases.
-
-- This is the Retrieval Controller's core job. See `architecture.md` §1.
-- Build test cases explicitly covering the no-retrieval-needed case (e.g.,
-  presentation-only turns: "repeat that in two bullets") — a false trigger here counts
-  against you, not just a missed early trigger.
-- Log every controller decision with a timestamp and trigger type for later analysis.
-- Measured against the committed streams with
-  `prism-rag eval --domain <cloud|govt> --mode streaming`: early-retrieval 0.97 cloud /
-  0.95 govt at a 0.0 false-trigger rate on both domains. Streams whose final
-  transcript is under 5 words are excluded from the denominator (they have no
-  meaningful pre-final phase); see `approach-summary.md`.
-- **Definition used:** an "early hit" is a provisional retrieval fired before the final
-  chunk. The stricter variant — fired at or before `stability_chunk_index` — is not yet
-  computed and must not be implied by the numbers above.
-- **Status:** metric and controller implemented; secondary before-stability rate and
-  `refinement`-category coverage still open.
-
-## G3 — Multi-Intent Identification (≥ 70% of compound queries)
-
-Requirement: accurately identifies and isolates at least distinct sub-intents in
-compound test utterances.
-
-- Build a labeled set of your own compound test utterances (with known sub-intent
-  counts) to self-validate against before submission — don't rely purely on
-  qualitative spot-checks.
-- Watch for over-fragmentation: splitting a simple question into multiple
-  near-identical queries is a documented pitfall that hurts this gate, not helps it.
-
-**Status: not started.** There is no `decomposer.py`, no `data-eval/compound.tsv`, and
-no `eval --mode decomposition`. `multi_intent` streams exist but are not scored.
-
-## G4 — Factual Grounding (≥ 85% citation support, zero fabricated/hallucinated doc IDs)
-
-Requirement: all sampled factual assertions supported by cited corpus chunks.
-
-**This is the highest-risk gate — see `risks-and-open-problems.md`.**
-
-- Evidence span extraction before generation is your primary defense (see
-  `generation-grounding.md`).
-- Consider RAGChecker or a similar claim-level entailment checker for your own
-  benchmarking report — it separates retriever-side failures (claim recall, context
-  precision) from generator-side failures (faithfulness, hallucination rate), which
-  you'll need to explain in your evaluation report regardless.
-- Never let the citation ID be generated freely by the LLM — enforce citation IDs are
-  drawn from an allowlist of actually-retrieved chunk IDs at the code level, not just
-  the prompt level. This eliminates fabricated Doc_IDs structurally rather than
-  hoping the model doesn't hallucinate one.
-
-**Status: partial.** The structural allowlist is implemented (citations come only from
-extracted spans over retrieved passages), so fabricated IDs are prevented by
-construction. There is **no measured citation-support artifact yet** — the ≥85%
-citation-support claim is unproven until `eval-reports/grounding.json` exists (Day 4d).
-
-## G5 — Session Refinement (verified state continuity)
-
-Requirement: late-arriving constraints narrow or update existing responses without
-clearing session state or re-executing full-corpus search.
-
-- See `architecture.md` and `generation-grounding.md`, both §"Session refinement".
-- Build explicit test cases with a two-turn sequence: initial answer, then a
-  late-arriving constraint, and verify (a) the system doesn't re-run a full search,
-  and (b) unaffected parts of the original answer are preserved.
-
-**Status: not started.** `refine_on_final` refreshes retrieval on the final transcript,
-but there is no session object, delta-query patch, `version` counter, or
-`refinement`-category stream. The behavioral spec lives in `architecture.md`.
-
-## G6 — Telemetry & Observability (100% trace coverage)
-
-Requirement: structured logs/metrics capturing execution timestamps, retrieval
-triggers, citations, answer version lineage, and token cost.
-
-- Build this alongside every other component, not as a final pass. See
-  `architecture.md` §5 for the specific fields to log.
-- The structured output JSON schema in `architecture.md` should give you most of this
-  "for free" if you build it correctly from the start.
-
-**Status: partial.** `RagResponse.decisions[]` carries a timestamp, text, decision, and
-reason per chunk, but there is no per-stage latency, no token usage (the provider
-client returns `str` only), no answer `version`, and no JSONL trace log.
-
-## General evaluation tooling worth adopting
-
-- **RAGChecker** (open-source, pip-installable) — claim-level entailment evaluation,
-  splits retriever vs. generator failure attribution. Useful for the required
-  Benchmarking & Evaluation Report, especially for G4.
-- **MT-RAG / MTRAGEval evaluation scripts** (IBM, open-source) — retrieval (nDCG) and
-  generation (harmonic-mean composite) scoring scripts for a closely related
-  benchmark; realistic target score ranges to sanity-check your own numbers against,
-  even though this isn't the exact benchmark you're being evaluated on.
-- For the two required ablation experiments (hybrid vs. dense-only retrieval;
-  rule-based vs. model-based controller), structure them as clean before/after
-  comparisons with the same eval harness — this is exactly the kind of ablation table
-  the SemEval papers reviewed all include, and graders will expect similarly legible
-  reporting.
+Recover answerable queries without weakening grounding, independently evaluate
+current-release semantic/citation support, broaden refinement validation, and
+record/upload the human demo video. Launch/trace success must not be presented
+as every deliverable being complete.

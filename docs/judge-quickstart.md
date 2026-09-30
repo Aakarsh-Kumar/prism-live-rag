@@ -75,6 +75,11 @@ unless you intentionally want to delete that volume.
 
 ## Verification status
 
+The supplied binary image and its offline replay evidence were generated before
+the subsequent source-only HTTP hardening. Rebuild/re-export the image to ship
+those newer protections; a source commit does not update an existing image archive.
+Regardless of image version, keep the dashboard on loopback and use trusted input.
+
 Clean-directory Compose launch without `.env` or host data/cache mounts was
 exercised. The release reached readiness in 24.1 seconds on the development PC;
 the final image also completed two cited queries with Docker networking disabled,
