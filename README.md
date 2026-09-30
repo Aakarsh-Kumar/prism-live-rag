@@ -5,6 +5,18 @@ Timestamped text chunks simulate evolving ASR hypotheses: the controller can
 retrieve before the user finishes speaking, while the final answer is grounded
 in retrieved Cloud/Govt passages.
 
+## Samsung hackathon submission
+
+Theme 04 · Binary Bits · SRM Institute of Science and Technology.
+The final submission tag is `PRISM_GENAI_HACKATHON_Y2026`.
+
+- [Presentation PDF](SRMIST_BinaryBits_Submission.pdf)
+- [Demo video on Google Drive](https://drive.google.com/drive/folders/1kKADF41rKLjVKMlLcp7u8tu87hfRkfLn?usp=sharing) — 4 minutes 52 seconds; publicly readable.
+- [AI-use disclosure PDF](LangAI3.0_AI_Disclosure.pdf)
+
+The presentation and disclosure are included in the tagged commit. The demo video
+is hosted on Drive and referenced here at the owner's request.
+
 ## Run the judge dashboard
 
 Install/start Docker, clone this repository, and provide your own Cerebras key:
