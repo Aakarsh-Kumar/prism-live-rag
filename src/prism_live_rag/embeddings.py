@@ -11,9 +11,9 @@ TOKEN_RE = re.compile(r"[A-Za-z0-9_]+")
 DEFAULT_NEURAL_MODEL = "BAAI/bge-small-en-v1.5"
 HASH_DIM = 128
 DEVICE_CHOICES = ("auto", "cpu", "cuda")
-DEFAULT_BATCH_SIZE = 128
+DEFAULT_BATCH_SIZE = 64  # Conservative default for small GPU memory budgets
 # Fixed sequence length for constant tensor shapes - prevents CUDA arena growth
-# Set to BGE-small's maximum token length for optimal quality
+# Set to BGE-small's maximum token length
 FIXED_SEQUENCE_LENGTH = 512
 _OOM_MARKERS = (
     "failed to allocate memory",

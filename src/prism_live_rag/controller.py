@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass
 from typing import Optional
 
@@ -146,18 +147,25 @@ class IntentStabilityState:
 
 PRESENTATION_COMMANDS = (
     "repeat",
+    "say that again",
+    "read that back",
+    "say again",
     "summarize",
     "summarise",
     "speak",
     "rephrase",
-    "can you rephrase",
+    "replay",
     "go back",
+    "go over that again",
     "start over",
+    "start again",
     "never mind",
+    "nevermind",
     "hold on",
     "stop",
     "pause",
     "what did you mean",
+    "what did you just say",
     "that's all",
     "thats all",
     "thank you",
@@ -165,6 +173,59 @@ PRESENTATION_COMMANDS = (
     "got it",
     "sounds good",
 )
+
+#: Politeness that precedes an imperative without changing it. Stripped before matching
+#: so "can you repeat that" is recognised as the same command as "repeat that".
+_POLITE_PREFIX = re.compile(
+    r"^(?:can|could|would|will|may)\s+you\s+(?:please\s+)?"
+    r"|^(?:please|just|ok|okay)\s+"
+    r"|^(?:i\s+(?:want|need)\s+you\s+to\s+)"
+)
+
+#: A presentation command is short. Beyond this many words the utterance is carrying real
+#: content and must retrieve: "stop" is a command, "stoplight timing in Denver" is not,
+#: and neither is "hold on to the waiver requirement".
+_MAX_PRESENTATION_WORDS = 5
+
+# A small number of common delivery commands exceed the general length cap. Keep
+# these as exact matches so longer content requests such as "hold on to the waiver
+# requirement" are still allowed through to retrieval.
+_LONG_PRESENTATION_COMMANDS = frozenset(
+    {
+        "go back to the previous point",
+        "what did you mean by that",
+    }
+)
+
+_PRESENTATION_PATTERNS = tuple(
+    (command, re.compile(rf"^{re.escape(command)}\b"))
+    for command in PRESENTATION_COMMANDS
+)
+
+
+def is_presentation_only(text: str) -> bool:
+    """True when the utterance is a request about delivery, not new content.
+
+    Matching is anchored at the start but respects word boundaries, a leading politeness
+    preamble is stripped first, and the whole utterance must be short. All three matter:
+    plain ``startswith`` both missed the common "can you repeat that" form and silently
+    swallowed genuine questions beginning with the same letters -- a recall bug in the
+    live path, not just a labelling nit.
+    """
+    lowered = text.lower().lstrip()
+    previous = None
+    while previous != lowered:
+        previous = lowered
+        lowered = _POLITE_PREFIX.sub("", lowered).lstrip()
+    if not lowered:
+        return False
+    normalized = lowered.rstrip(" .!?")
+    if (
+        len(lowered.split()) > _MAX_PRESENTATION_WORDS
+        and normalized not in _LONG_PRESENTATION_COMMANDS
+    ):
+        return False
+    return any(pattern.match(lowered) for _, pattern in _PRESENTATION_PATTERNS)
 
 
 class SemanticRetrievalController:
@@ -426,8 +487,7 @@ class SemanticRetrievalController:
         return "Wait"
     
     def _is_presentation_only(self, text: str) -> bool:
-        lowered = text.lower().lstrip()
-        return any(lowered.startswith(command) for command in PRESENTATION_COMMANDS)
+        return is_presentation_only(text)
 
 
 # Keep the original rule-based controller for compatibility
@@ -465,14 +525,6 @@ class RuleBasedRetrievalController:
         if chunk.is_final:
             self.last_reason = "final transcript"
             return "Retrieve"
-        if chunk.confidence is not None and chunk.confidence < self.min_confidence:
-            self._window.append(text)
-            self.last_reason = f"low confidence {chunk.confidence}"
-            return "Wait"
-        if len(text) < self.min_chars or len(text.split()) < self.min_tokens:
-            self._window.append(text)
-            self.last_reason = "too short for retrieval"
-            return "Wait"
         self._window.append(text)
         committed = self._committed_prefix_len()
         if committed >= self.min_stable_words:
@@ -481,6 +533,12 @@ class RuleBasedRetrievalController:
                 self.last_reason = f"stable intent ({committed} words agreed)"
                 return "Retrieve"
             self.last_reason = "already retrieved; awaiting final"
+            return "Wait"
+        if chunk.confidence is not None and chunk.confidence < self.min_confidence:
+            self.last_reason = f"low confidence {chunk.confidence}; intent not stable"
+            return "Wait"
+        if len(text) < self.min_chars or len(text.split()) < self.min_tokens:
+            self.last_reason = "too short for retrieval; intent not stable"
             return "Wait"
         self.last_reason = f"intent not yet stable ({committed}/{self.min_stable_words} words)"
         return "Wait"
@@ -501,8 +559,7 @@ class RuleBasedRetrievalController:
         return committed
 
     def _is_presentation_only(self, text: str) -> bool:
-        lowered = text.lower().lstrip()
-        return any(lowered.startswith(command) for command in PRESENTATION_COMMANDS)
+        return is_presentation_only(text)
 
 
 def simulate_chunks(text: str, step_words: int = 4, interval_s: float = 0.8) -> list[TranscriptChunk]:

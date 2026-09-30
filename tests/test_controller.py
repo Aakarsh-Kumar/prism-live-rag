@@ -14,15 +14,21 @@ def test_controller_retrieves_on_final() -> None:
 def test_controller_retrieves_on_stable_partial() -> None:
     controller = RuleBasedRetrievalController()
     controller.decide(TranscriptChunk(0.5, "how do I deploy", False, 0.8))
-    controller.decide(TranscriptChunk(1.0, "how do I deploy code", False, 0.82))
-    assert controller.decide(TranscriptChunk(1.5, "how do I deploy code engine", False, 0.85)) == "Retrieve"
+    assert controller.decide(TranscriptChunk(1.0, "how do I deploy code", False, 0.82)) == "Retrieve"
+    assert controller.decide(TranscriptChunk(1.5, "how do I deploy code engine", False, 0.85)) == "Wait"
+
+
+def test_controller_agreement_is_primary_even_before_length_thresholds() -> None:
+    controller = RuleBasedRetrievalController()
+    assert controller.decide(TranscriptChunk(0.5, "how do I", False, 0.60)) == "Wait"
+    assert controller.decide(TranscriptChunk(1.0, "how do I deploy", False, 0.65)) == "Retrieve"
 
 
 def test_controller_does_not_thrash_after_firing() -> None:
     controller = RuleBasedRetrievalController()
     controller.decide(TranscriptChunk(0.5, "how do I deploy", False, 0.8))
-    controller.decide(TranscriptChunk(1.0, "how do I deploy code", False, 0.82))
-    assert controller.decide(TranscriptChunk(1.5, "how do I deploy code engine", False, 0.85)) == "Retrieve"
+    assert controller.decide(TranscriptChunk(1.0, "how do I deploy code", False, 0.82)) == "Retrieve"
+    assert controller.decide(TranscriptChunk(1.5, "how do I deploy code engine", False, 0.85)) == "Wait"
     assert controller.decide(TranscriptChunk(2.0, "how do I deploy code engine now", False, 0.88)) == "Wait"
 
 
