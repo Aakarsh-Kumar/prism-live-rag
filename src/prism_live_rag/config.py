@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(os.environ.get("PRISM_ROOT", Path(__file__).resolve().parents[2]))
 
 
 def _load_env_file(path: Path) -> None:
@@ -77,8 +77,10 @@ class Settings:
     top_k: int = 5
     groq_api_key: str | None = None
     deepseek_api_key: str | None = None
+    cerebras_api_key: str | None = None
     groq_model: str = "openai/gpt-oss-120b"
-    deepseek_model: str = "deepseek-chat"
+    deepseek_model: str = "deepseek-flash"
+    cerebras_model: str = "gpt-oss-120b"
     provider_timeout_s: float = 12.0
 
     @property
@@ -97,8 +99,10 @@ def load_settings() -> Settings:
         deepseek_api_key=_env(
             "DEEPSEEK_API_KEY", "DEEPSEEK-API-KEY"
         ),
+        cerebras_api_key=_env("CEREBRAS_API_KEY", "CEREBRAS-API-KEY"),
         groq_model=_env("GROQ_MODEL", "GROQ-MODEL") or "openai/gpt-oss-120b",
-        deepseek_model=_env("DEEPSEEK_MODEL", "DEEPSEEK-MODEL") or "deepseek-chat",
+        deepseek_model=_env("DEEPSEEK_MODEL", "DEEPSEEK-MODEL") or "deepseek-flash",
+        cerebras_model=_env("CEREBRAS_MODEL", "CEREBRAS-MODEL") or "gpt-oss-120b",
         embedding_backend=_env("EMBEDDING_BACKEND", "EMBEDDING-BACKEND") or "auto",
         embedding_model=_env("EMBEDDING_MODEL", "EMBEDDING-MODEL")
         or "BAAI/bge-small-en-v1.5",
