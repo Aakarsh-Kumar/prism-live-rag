@@ -18,6 +18,8 @@ build/
 .cache/
 submission-assets/
 submission/
+submissions/
+docker-compose.local-assets.yml
 
 # Large local benchmark artifacts.
 # Keep small qrels/reference metadata commit-friendly, but do not commit corpora,

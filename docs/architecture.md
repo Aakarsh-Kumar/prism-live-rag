@@ -77,12 +77,13 @@ them for parallel retrieval.
 
 ## ③ Corpus Retrieval & Fusion — [implemented]
 
-See `retrieval.md` for full config, hyperparameters, and validated/invalidated
-techniques.
+See [system architecture brief](system-architecture-brief.md) for the hybrid
+retrieval and reranking design.
 
 ## ④ Session-Aware Synthesis — [implemented; refinement accuracy limited]
 
-See `generation-grounding.md` for full config, prompts, and validated techniques.
+See [system architecture brief](system-architecture-brief.md) for synthesis and
+session refinement behavior and limitations.
 
 ## ⑤ Observability & Telemetry (cross-cutting) — [implemented]
 

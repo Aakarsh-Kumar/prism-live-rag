@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--publish", action="store_true", help="Create the GitHub release and upload the verified asset")
+    parser.add_argument("--archive", type=Path, help="Path to the pinned archive (default: submission/<asset name>)")
     parser.add_argument("--check-public", action="store_true", help="Verify anonymous judges can download the published asset")
     args = parser.parse_args()
     descriptor = load_descriptor(ROOT / "release-assets.json")
@@ -29,7 +30,7 @@ def main() -> None:
     if parsed.hostname != "github.com" or len(parts) != 6 or parts[2:4] != ["releases", "download"]:
         raise SystemExit("Expected a pinned public GitHub release URL")
     repository, tag, name = "/".join(parts[:2]), parts[4], parts[5]
-    archive = ROOT / "submission" / name
+    archive = args.archive or ROOT / "submission" / name
     if not archive.is_file() or archive.stat().st_size != descriptor["bytes"] or digest_file(archive) != descriptor["sha256"]:
         raise SystemExit("Release archive is missing or does not match release-assets.json; regenerate/re-pin before publishing")
     print(f"Repository: {repository}\nRelease tag: {tag}\nAsset: {archive}\nSHA-256: {descriptor['sha256']}", flush=True)

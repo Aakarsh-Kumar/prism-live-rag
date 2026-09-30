@@ -61,16 +61,18 @@ not token-streamed. Citation overlap diagnostics are not semantic verdicts.
 
 ## Maintainer publication prerequisite
 
-The repository owner must publish the pinned release asset **once**, before
-inviting judges to clone. That is not a judge setup step.
-See [release publication](release-publication.md) for the exact tag, archive and
-validation command. A missing/private release is reported clearly; the app does
+The pinned [asset release](https://github.com/Aakarsh-Kumar/prism-live-rag/releases/tag/judge-assets-2026-09-30)
+is published and publicly readable. Its URL, size, archive SHA-256 and manifest
+SHA-256 are pinned in `release-assets.json`. A missing/private release is reported clearly; the app does
 not silently run with missing corpus/models or ask judges for GitHub credentials.
 
-At this verification snapshot the public URL returned HTTP 404. Runtime bootstrap
-was verified using the exact pinned local release archive and a fresh Docker
-volume, then cached startup without networking. Public end-to-end verification
-remains pending publication. Do not call the GitHub path ready until that check passes.
+On 30 September 2026, anonymous download returned HTTP 200 with the pinned size.
+A separate empty Docker asset volume downloaded the public archive without a
+local mount or GitHub credentials, verified archive/file checksums, and completed
+`prism-rag validate-data`. The local dashboard loaded 101,763 cleaned passages and
+completed two UI replays with citations and valid traces. These replays took about
+177 seconds cold and 85 seconds warm on the Windows owner's CPU setup; latency
+on this machine remains a limitation.
 
 ## Evidence and quality scope
 

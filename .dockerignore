@@ -4,6 +4,7 @@
 .venv
 .cache
 submission/
+submissions/
 submission-assets/
 .pytest_cache
 __pycache__

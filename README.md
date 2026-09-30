@@ -26,10 +26,10 @@ First build/start needs internet and can take several minutes; cached startup
 does not redownload or rebuild the index. Allocate at least 6 GB RAM to Docker.
 See [judge quickstart](docs/judge-quickstart.md) for resources and port configuration.
 
-**Publication prerequisite:** the repository owner must publish the asset once,
-as described in [release publication](docs/release-publication.md). The pinned URL
-returned HTTP 404 during verification; the public clone path cannot complete until
-that owner step is done. Judges do not perform that publication step.
+The pinned [judge asset release](https://github.com/Aakarsh-Kumar/prism-live-rag/releases/tag/judge-assets-2026-09-30)
+is public. On 30 September 2026, anonymous download and a fresh-volume Docker
+bootstrap passed archive/manifest checks and corpus/query validation. Judges do
+not need GitHub authentication or a local asset archive.
 
 The dashboard provides all 200 accepted test queries, filters and search, streamed
 partials/revisions, controller reasons, actual search dispatches, returned passages
@@ -48,7 +48,7 @@ Completed answers can be followed by a presentation request or a delta refinemen
    session refinement.
 
 See the [architecture brief](docs/system-architecture-brief.md),
-[retrieval reference](docs/retrieval.md) and [telemetry schema](docs/telemetry-schema.md).
+[pipeline architecture](docs/architecture.md) and [telemetry schema](docs/telemetry-schema.md).
 
 ## Verification and honest limits
 
@@ -79,8 +79,7 @@ These are execution/timing results, not an overall answer-quality pass:
 
 The [benchmark report](docs/benchmark-evaluation-report.md) separates each protocol,
 runtime version, denominator and failure. Raw generated evidence and checksums ship
-in submission bundles rather than Git history. The human records the final video
-using the [recording script](docs/demo-video-script.md).
+in submission bundles rather than Git history.
 
 ## Cerebras routing
 
@@ -104,7 +103,7 @@ python3.13 -m venv .venv
 ```
 
 Local execution requires the corpus described in
-[data working set](docs/data-working-set.md). Neural retrieval additionally requires
+[corpus README](data/corpora/README.md). Neural retrieval additionally requires
 model files and a matching index. `bash scripts/setup_embeddings.sh` selects ONNX
 Runtime for the available GPU/CPU. `prism-rag index` builds an index; it is not a
 startup step for the Docker judge path. Do not replace the full submission index with

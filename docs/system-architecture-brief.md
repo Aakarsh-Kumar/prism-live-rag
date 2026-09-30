@@ -28,7 +28,8 @@ version lineage rather than sharing mutable state between independent runs.
 Provider evidence selection is followed by a semantic relevance filter, not
 generative document reranking. Exact source text and allowlisted passage IDs
 remain mandatory. Fresh-volume installation and cached offline startup were checked
-locally; public release download is pending publication. Historical CPU timings
+locally; anonymous public release download and fresh-volume bootstrap also passed
+on 30 September 2026. Historical CPU timings
 do not include first-time network transfer.
 
 Every completed execution can append one JSONL trace with an execution ID and timestamp, per-chunk decisions, retrieval triggers, actual subqueries, answer, citations, answer version lineage, stage latency, provider token usage, and estimated USD inference cost. Cost is zero when no provider tokens are used. Cerebras estimates use the published `gpt-oss-120b` input/output prices recorded in the trace basis; these are estimates, not invoices. Failed executions receive an error trace with unavailable fields marked explicitly.

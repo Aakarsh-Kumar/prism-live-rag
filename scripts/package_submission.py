@@ -45,7 +45,7 @@ def main():
     if args.assets_only:
         print("Prepared submission/prism-live-rag-assets.tar.gz")
         return
-    source_paths = ["README.md", "SECURITY.md", "AGENTS.md", "guide.md", "pyproject.toml", "requirements.lock",
+    source_paths = ["README.md", "SECURITY.md", "guide.md", "pyproject.toml", "requirements.lock",
                     "requirements-cpu.lock", "Dockerfile", "docker-compose.yml", "release-assets.json", ".dockerignore",
                     ".gitignore", ".env.example", "src", "scripts", "tests", "docs", "data/LICENSE"]
     with tarfile.open(out / "prism-live-rag-source.tar.gz", "w:gz", compresslevel=1) as archive:

@@ -27,8 +27,8 @@ judge. Correct abstentions are excluded from claim scoring and reported separate
 Non-abstaining responses to unanswerable/underspecified cases remain in the factual
 denominator, so this result measures grounding rather than abstention correctness.
 
-See [`samsung-g4-compliance-achieved.md`](samsung-g4-compliance-achieved.md) for the
-full protocol, limitations, and reproduction command. Older results in the working
+See the [benchmark report](benchmark-evaluation-report.md) for current protocols
+and limitations. Older results in the working
 history used different samples/providers and are superseded by this artifact; do not
 compare them as a controlled before/after experiment.
 
