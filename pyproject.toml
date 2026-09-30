@@ -37,6 +37,9 @@ prism-rag = "prism_live_rag.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+prism_live_rag = ["webui/*.html", "webui/*.css", "webui/*.js"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]

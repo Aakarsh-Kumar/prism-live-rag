@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Prism · Live RAG</title>
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    #answer{white-space:pre-wrap;overflow-wrap:anywhere}
+    #conversation-context{margin:0 18px 12px;max-height:220px;overflow:auto;font-size:12px;line-height:1.55}
+    #conversation-context summary,#benchmark-diagnostics summary{cursor:pointer;color:#526b60}
+    #conversation-context p{margin:10px 0;white-space:pre-wrap}
+    #benchmark-diagnostics{margin:14px 0;font-size:11px;line-height:1.6;color:#72807a}
+  </style>
+  <style>.scenario-control input[type=search]{display:block;width:100%;height:30px;margin:0 0 5px;padding:0 9px;border:1px solid #e1e8e3;border-radius:6px;color:#142520;font:10px sans-serif;outline:none}.scenario-control input[type=search]:focus{border-color:#62a891;box-shadow:0 0 0 2px #e4f3ed}</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Prism dashboard"><span class="brand-mark">P</span><span>prism<span class="brand-light"> / live rag</span></span></a>
+    <div class="top-meta"><span class="live-dot"></span><span>LOCAL DEMO</span><span class="top-divider"></span><span id="provider-top">offline-ready</span></div>
+  </header>
+
+  <main class="shell">
+    <section class="intro">
+      <div><p class="eyebrow">STREAMING RETRIEVAL · TRACE EXPLORER</p><h1>See the system think.</h1><p class="intro-copy">Play a simulated conversation and inspect how each incoming transcript update changes retrieval, evidence, and the final answer. Citation presence does not by itself prove semantic support.</p></div>
+      <div class="intro-chip"><span class="chip-icon">↗</span><span>Incremental ASR simulation<br><small>Each chunk is delivered on its own schedule</small></span></div>
+    </section>
+
+    <section class="controls panel">
+      <div class="scenario-control"><label for="scenario-set">SCENARIO SET <span id="scenario-count" class="muted"></span></label><select id="scenario-set"><option value="test" selected>Evaluated test set · 200</option></select><input id="scenario-filter" type="search" placeholder="Filter by ID, domain, category, or expected behavior"><select id="scenario"><option>Loading scenarios…</option></select><div id="scenario-meta" class="scenario-meta">Loading the evaluated 200-query set…</div></div>
+      <div class="run-options"><label for="speed">PACE</label><select id="speed" class="compact"><option value="0.5">½× slow</option><option value="1" selected>1× real-time</option><option value="2">2×</option><option value="4">4×</option></select></div>
+      <div class="run-options mode-option"><label for="mode">LLM ROUTING</label><select id="mode" class="compact"><option value="deterministic">Disabled · extractive answers</option><option value="provider" disabled>Automatic · checking…</option></select></div>
+      <label class="check-option"><input id="multi-intent" type="checkbox" checked><span>Decompose intents (rule-based, no API calls)</span></label>
+      <label class="check-option disabled" id="llm-decomposer-wrap"><input id="llm-decomposer" type="checkbox" disabled><span>LLM intent validation (compound queries only)</span></label>
+      <button id="run" class="button primary"><span>▶</span> Run scenario</button>
+      <button id="replay" class="button secondary" disabled>↻ Replay</button>
+    </section>
+
+    <section class="statusline"><div><span id="run-indicator" class="status-dot idle"></span><span id="run-status">Choose a scenario to begin</span></div><span id="run-id" class="mono"></span></section>
+
+    <section class="workspace">
+      <div class="column left-column">
+        <article class="panel transcript-panel">
+          <div class="panel-heading"><div><p class="eyebrow">01 / INPUT STREAM</p><h2>Live transcript</h2></div><span id="chunk-counter" class="counter">0 chunks</span></div>
+          <div class="transcript-wrap"><div id="transcript-empty" class="empty-state"><span class="empty-icon">⌁</span><p>Transcript chunks will appear here<br>as the speaker talks.</p></div><ol id="transcript" class="transcript" aria-live="polite"></ol></div>
+          <div class="transcript-foot"><span><i class="legend final"></i> final hypothesis</span><span><i class="legend partial"></i> partial / revised</span><span class="foot-note">Times are simulated</span></div>
+        </article>
+
+        <article class="panel answer-panel">
+          <div class="panel-heading"><div><p class="eyebrow">04 / SYSTEM OUTPUT</p><h2>Answer &amp; evidence</h2></div><span id="answer-state" class="badge neutral">Waiting</span></div>
+          <div id="answer" class="answer-copy"><span class="placeholder">The final answer appears after the stream completes.</span></div>
+          <div id="answer-notice" class="answer-notice hidden"></div>
+          <div class="evidence-heading"><span>PASSAGE CITATIONS</span><span id="citation-count" class="muted">0</span></div>
+          <div id="citations" class="citations"><span class="placeholder">No evidence retrieved yet.</span></div>
+          <details id="claim-details" class="claim-details hidden"><summary>Exact sentence-to-passage matches <span class="muted">(available only for verbatim extractive sentences)</span></summary><div id="claim-map"></div></details>
+        </article>
+      </div>
+
+      <div class="column right-column">
+        <article class="panel timeline-panel">
+          <div class="panel-heading"><div><p class="eyebrow">02 / CONTROL FLOW</p><h2>Run timeline</h2></div><span id="timeline-count" class="counter">0 events</span></div>
+          <div id="timeline-empty" class="empty-state compact-empty">Waiting for stream events…</div>
+          <ol id="timeline" class="timeline" aria-live="polite"></ol>
+        </article>
+
+        <article class="panel telemetry-panel">
+          <div class="panel-heading"><div><p class="eyebrow">03 / OBSERVABILITY</p><h2>Under the hood</h2></div><span class="badge neutral">RUN DATA</span></div>
+          <div class="metric-grid">
+            <div class="metric"><span>RETRIEVAL</span><strong id="metric-retrieval">—</strong><small>stage latency</small></div>
+            <div class="metric"><span>GENERATION</span><strong id="metric-generation">—</strong><small>stage latency</small></div>
+            <div class="metric"><span>END TO END</span><strong id="metric-total">—</strong><small>pipeline latency</small></div>
+            <div class="metric"><span>LLM REQUESTS</span><strong id="metric-llm">0</strong><small id="metric-model">No calls observed</small></div>
+            <div class="metric"><span>TOKEN USAGE</span><strong id="metric-tokens">Unavailable</strong><small>provider-reported only</small></div>
+          </div>
+          <div class="trace-row"><span>TRACE ID</span><code id="trace-id">Not assigned yet</code></div>
+          <div class="trace-row"><span>ESTIMATED COST</span><code id="cost">Unavailable</code></div>
+          <div class="trace-row"><span>VALIDATION</span><code id="validation">Not run</code></div>
+          <p class="telemetry-note" id="retrieval-note">Retrieval mode and corpus size are reported by the running server. Displayed scores and ranks come from this run; reranking status is shown per retrieval.</p>
+        </article>
+
+        <details class="panel raw-panel"><summary><span><p class="eyebrow">TRACE DETAIL</p><strong>Raw event log</strong></span><span class="muted">Expand</span></summary><pre id="raw-log">Events will be recorded here.</pre></details>
+      </div>
+    </section>
+    <footer><span>PRISM LIVE RAG</span><span>Evidence-first · event-driven · every value from this run</span></footer>
+  </main>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>
