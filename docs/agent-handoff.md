@@ -21,6 +21,13 @@ checkpoints and never rerun completed provider rows just to fill a progress coun
 The human records/uploads the demo video and decides when to push. Commits are now
 explicitly authorized; no history rewrite or push is authorized.
 
+Clone-and-run update: Docker no longer copies ignored local staging assets at build
+time. Runtime bootstrap downloads the asset pinned in `release-assets.json`, validates checksums
+and safely installs/caches corpus/index/models; configured keys default to Cerebras.
+59 focused tests and a fresh-volume two-query replay passed. Cached startup with
+networking disabled and no archive mount passed. The public release currently
+returns 404; the maintainer must publish it before judges can run from GitHub.
+
 ## Progress ledger (reviewer, keep current)
 
 - ✅ Day 1a — G1 reproducibility: `.env` optional in compose, `scripts/fetch-corpus.py`,

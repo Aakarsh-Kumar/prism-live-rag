@@ -28,6 +28,16 @@ verified against exact execution IDs, independently of historical GPU runs.
 
 ### Release verification (30 September)
 
+The later clone-and-run bootstrap passed 59 focused bootstrap/security/provider/
+packaging tests on the host and 59 inside the corrected Docker image. A source-only
+Docker build needed no local corpus/models. Fresh
+asset-volume installation using the exact local release mirror loaded CPU hybrid
+retrieval and completed two cited queries with valid traces. Cached startup without
+networking or an archive mount selected provider mode with configured credentials;
+this startup check made no inference requests. The pinned public URL returned 404,
+so public download verification remains blocked on maintainer publication. These
+packaging checks are not a new 200-query semantic or full regression pass.
+
 The full regression suite passed **275 tests, with two environment-dependent
 skips**, including the final provider-date guard. Clean CPU Compose startup without `.env`, model
 downloads, GPU access or host corpus/index mounts reached readiness in **24.1

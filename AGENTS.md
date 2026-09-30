@@ -25,10 +25,13 @@ LanceDB is the vector database for local retrieval indexes.
   small GPUs during full-corpus builds.
 - `prism-rag run-demo --domain cloud` — run a deterministic streaming RAG demo.
 - `pytest` — run the Python test suite.
-- `bash scripts/run_judge.sh` — load the supplied image and launch the dashboard.
-- `docker compose up --build` — source build after staging `submission-assets/`;
-  see `docs/judge-quickstart.md`. The container is non-root and uses a named
-  telemetry volume, not host corpus/cache mounts.
+- `docker compose up --build` — clone-and-run judge path: automatically fetches
+  and checksum-verifies the public release pinned in `release-assets.json`, then
+  reuses its corpus/index/models in a named asset volume. No local staging or
+  index rebuild is required. A configured Cerebras key selects provider routing.
+- `bash scripts/run_judge.sh` — wrapper for the same build/start path. The container
+  is non-root; assets and telemetry use named volumes, not host corpus/cache mounts.
+  The maintainer must publish the pinned release once; see `docs/release-publication.md`.
 
 If a host `prism-rag index` fails with `Permission denied` (or LanceDB hangs at connect), a previous `docker compose run ... prism-rag index` left a root-owned `.cache/lancedb`; clear it with `sudo rm -rf .cache/lancedb` and rebuild.
 

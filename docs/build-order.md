@@ -16,6 +16,9 @@ and [security policy](../SECURITY.md) for current verification and deployment li
 Next priorities are answerable-query recovery without weakening grounding,
 independent semantic validation, broader refinement checks and the human-recorded
 video. Do not rebuild or shrink the full corpus/index as a smoke check.
+The clone-and-run bootstrap now downloads pinned release assets automatically;
+public availability still requires the maintainer publication step documented in
+`release-publication.md`. Judges only clone, configure Cerebras and run Compose.
 
 ## Historical build sequence — 22 September 2026
 

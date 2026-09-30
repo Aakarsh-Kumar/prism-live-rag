@@ -7,24 +7,29 @@ in retrieved Cloud/Govt passages.
 
 ## Run the judge dashboard
 
-The supplied Linux AMD64 Docker image includes the corpus, LanceDB index and CPU
-models. No GPU, API key or model download is required at runtime.
-
-1. Extract the source bundle and place `prism-live-rag-judge.tar.gz` in its root.
-2. Start Docker and run:
+Install/start Docker, clone this repository, and provide your own Cerebras key:
 
 ```bash
-bash scripts/run_judge.sh
+git clone https://github.com/Aakarsh-Kumar/prism-live-rag.git
+cd prism-live-rag
+cp .env.example .env
+# Edit .env and set CEREBRAS_API_KEY.
+docker compose up --build
 ```
 
-Open **http://localhost:8080**. Allow at least 6 GB RAM for Docker; startup took
-about 24–27 seconds on the development PC, excluding image loading. If port 8080
-is already occupied, use `PRISM_PORT=8081 bash scripts/run_judge.sh`.
+On Windows, copy `.env.example` using your editor/file manager. Open
+**http://localhost:8080** when startup logs show the dashboard URL.
+Docker automatically downloads the pinned corpus/index/model release asset,
+verifies archive and file checksums, and caches it in a persistent volume.
+**No manual asset download, extraction, GPU or host Python is required.**
+First build/start needs internet and can take several minutes; cached startup
+does not redownload or rebuild the index. Allocate at least 6 GB RAM to Docker.
+See [judge quickstart](docs/judge-quickstart.md) for resources and port configuration.
 
-For a source build, extract the separate asset bundle into `submission-assets/`
-first, then run `docker compose up --build -d`. A bare Git clone does not contain
-the large corpus, index or model files. See [judge quickstart](docs/judge-quickstart.md)
-for offline loading, asset preparation and the optional unattended 200-query replay.
+**Publication prerequisite:** the repository owner must publish the asset once,
+as described in [release publication](docs/release-publication.md). The pinned URL
+returned HTTP 404 during verification; the public clone path cannot complete until
+that owner step is done. Judges do not perform that publication step.
 
 The dashboard provides all 200 accepted test queries, filters and search, streamed
 partials/revisions, controller reasons, actual search dispatches, returned passages
@@ -48,8 +53,13 @@ See the [architecture brief](docs/system-architecture-brief.md),
 ## Verification and honest limits
 
 The release verification recorded **275 tests passed, two skipped**. Subsequent
-local-request security and packaging checks passed **36 focused tests**; the full
-suite was not rerun after that hardening.
+bootstrap, security, provider and packaging checks passed **59 focused tests on
+the host and 59 inside Docker**;
+the full suite was not rerun after these changes. The new image built without a
+local corpus/model build context, installed the pinned archive into a fresh asset
+volume and completed two cited queries with valid traces. Cached restart succeeded
+without networking or an archive mount; configured credentials selected provider
+mode automatically without making an inference request during that startup check.
 
 The completed CPU dashboard audit contains **200 unique executions and 200 valid
 traces**, zero invalid citation IDs, and actual pre-final search in **118/130
@@ -72,13 +82,15 @@ runtime version, denominator and failure. Raw generated evidence and checksums s
 in submission bundles rather than Git history. The human records the final video
 using the [recording script](docs/demo-video-script.md).
 
-## Optional provider mode
+## Cerebras routing
 
 Copy `.env.example` to `.env` and set `CEREBRAS_API_KEY` locally.
 The dashboard uses `CEREBRAS_MODEL=gpt-oss-120b`, paced at five requests/minute.
 Routing determines whether a query needs a provider call; not every query does.
-Keys stay server-side. The default is provider-free; provider mode is quota-dependent
-and slower. Groq/DeepSeek remain available for legacy CLI paths.
+Keys stay server-side. With a key, the dashboard/API default to automatic provider
+routing. No-key operation is explicitly provider-free and not the recommended
+quality demonstration. Provider mode is quota-dependent and slower. Groq/DeepSeek
+remain available for legacy CLI paths.
 
 ## Local development
 
@@ -95,7 +107,7 @@ Local execution requires the corpus described in
 [data working set](docs/data-working-set.md). Neural retrieval additionally requires
 model files and a matching index. `bash scripts/setup_embeddings.sh` selects ONNX
 Runtime for the available GPU/CPU. `prism-rag index` builds an index; it is not a
-startup step for the supplied image. Do not replace the full submission index with
+startup step for the Docker judge path. Do not replace the full submission index with
 a small smoke-test index.
 
 ```bash

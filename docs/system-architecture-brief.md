@@ -14,15 +14,22 @@ The engine accepts timestamped, evolving ASR text hypotheses. Each partial arriv
 ## Provenance and trace schema
 
 The judge dashboard uses stdlib HTTP and server-sent events, with browser assets
-included in the Python package. A CPU Docker image bundles the corpus, existing
-index, BGE-small and cross-encoder caches. No microphone adapter, model downloads
-or indexing are part of runtime startup. GPU acceleration is optional locally.
+included in the Python package. A source-built CPU Docker image automatically
+downloads the public release pinned by archive and file-manifest checksums, safely
+installs the corpus/existing index/BGE-small/cross-encoder caches in a persistent
+volume, and verifies cached assets on later starts. No microphone adapter or
+index rebuild is part of runtime startup. GPU acceleration is optional locally.
+Configured Cerebras credentials select automatic provider routing; keys remain
+server-side. The maintainer must publish the pinned public release before judges
+can use the clone-and-run path.
 The browser can continue a completed run with an explicit refinement or
 presentation-only follow-up; each branch copies its parent session and keeps
 version lineage rather than sharing mutable state between independent runs.
 Provider evidence selection is followed by a semantic relevance filter, not
 generative document reranking. Exact source text and allowlisted passage IDs
-remain mandatory. CPU cold-start and query times require final-image measurement.
+remain mandatory. Fresh-volume installation and cached offline startup were checked
+locally; public release download is pending publication. Historical CPU timings
+do not include first-time network transfer.
 
 Every completed execution can append one JSONL trace with an execution ID and timestamp, per-chunk decisions, retrieval triggers, actual subqueries, answer, citations, answer version lineage, stage latency, provider token usage, and estimated USD inference cost. Cost is zero when no provider tokens are used. Cerebras estimates use the published `gpt-oss-120b` input/output prices recorded in the trace basis; these are estimates, not invoices. Failed executions receive an error trace with unavailable fields marked explicitly.
 
