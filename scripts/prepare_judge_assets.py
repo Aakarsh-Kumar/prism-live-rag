@@ -34,7 +34,7 @@ def main() -> None:
         "mtragun-human/generation_tasks/reference.jsonl", "simulated_streams",
         "curated_dataset/streams", "curated_dataset/decomposition",
         "curated_dataset/test.jsonl", "curated_dataset/manifest.json",
-        "corpora/README.md", "mtragun-human/README.md",
+        "LICENSE", "corpora/README.md", "mtragun-human/README.md",
     ):
         stage(ROOT / "data" / relative, out / "data" / relative)
     stage(ROOT / ".cache/lancedb", out / "lancedb")
@@ -44,7 +44,7 @@ def main() -> None:
           out / "huggingface/hub/models--cross-encoder--ms-marco-MiniLM-L-12-v2")
     manifest = {}
     for path in sorted(out.rglob("*")):
-        if path.is_file() and path.name != "manifest.json":
+        if path.is_file() and path != out / "manifest.json":
             digest = hashlib.sha256()
             with path.open("rb") as handle:
                 for block in iter(lambda: handle.read(1024 * 1024), b""):

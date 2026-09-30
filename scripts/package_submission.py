@@ -1,6 +1,8 @@
 """Create source/assets archives from explicit allowlists, excluding secrets/history."""
 from __future__ import annotations
 import hashlib
+import argparse
+import gzip
 import json
 from pathlib import Path
 import tarfile
@@ -16,12 +18,36 @@ def safe_member(member):
     return member
 
 
+def write_asset_archive(destination: Path) -> None:
+    def canonical_member(member):
+        member = safe_member(member)
+        if member is not None:
+            member.mtime = 0
+            member.uid = member.gid = 0
+            member.uname = member.gname = ""
+        return member
+    with destination.open("wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, compresslevel=1, mtime=0) as compressed:
+            with tarfile.open(fileobj=compressed, mode="w") as archive:
+                archive.add(ROOT / "submission-assets", arcname="submission-assets", filter=canonical_member)
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--assets-only", action="store_true", help="Prepare the reproducible pinned release asset")
+    modes.add_argument("--source-only", action="store_true", help="Refresh source/checksums without rewriting the pinned asset")
+    args = parser.parse_args()
     out = ROOT / "submission"
     out.mkdir(exist_ok=True)
+    if not args.source_only:
+        write_asset_archive(out / "prism-live-rag-assets.tar.gz")
+    if args.assets_only:
+        print("Prepared submission/prism-live-rag-assets.tar.gz")
+        return
     source_paths = ["README.md", "SECURITY.md", "AGENTS.md", "guide.md", "pyproject.toml", "requirements.lock",
-                    "requirements-cpu.lock", "Dockerfile", "docker-compose.yml", ".dockerignore",
-                    ".gitignore", ".env.example", "src", "scripts", "tests", "docs"]
+                    "requirements-cpu.lock", "Dockerfile", "docker-compose.yml", "release-assets.json", ".dockerignore",
+                    ".gitignore", ".env.example", "src", "scripts", "tests", "docs", "data/LICENSE"]
     with tarfile.open(out / "prism-live-rag-source.tar.gz", "w:gz", compresslevel=1) as archive:
         for relative in source_paths:
             archive.add(ROOT / relative, arcname=relative, filter=safe_member)
@@ -39,12 +65,13 @@ def main():
                      "judge-release-cpu-200-traces-20260930.jsonl",
                      "judge-release-offline-2-20260930.jsonl",
                      "judge-release-offline-traces-20260930.jsonl",
-                     "judge-release-offline-report-20260930.json"):
+                     "judge-release-offline-report-20260930.json",
+                     "clone-bootstrap-2-20260930.jsonl",
+                     "clone-bootstrap-traces-20260930.jsonl",
+                     "clone-bootstrap-report-20260930.json"):
             path = ROOT / ".cache/verification" / name
             if path.exists():
                 archive.add(path, arcname="verification/" + path.name)
-    with tarfile.open(out / "prism-live-rag-assets.tar.gz", "w:gz", compresslevel=1) as archive:
-        archive.add(ROOT / "submission-assets", arcname="submission-assets", filter=safe_member)
     manifests = {}
     for path in sorted(out.iterdir()):
         if path.is_file() and path.name != "checksums.json":
