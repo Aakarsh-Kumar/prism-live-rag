@@ -55,6 +55,14 @@ class SimulatedStream:
     settling_ms: int
     sub_intents: tuple[SubIntent, ...]
     chunks: tuple[TranscriptChunk, ...]
+    split: str = ""
+    case_class: str = ""
+    expected_behavior: str = ""
+    base_utterance: str = ""
+    context_turns: tuple[tuple[str, str], ...] = ()
+    asr_supersedes: tuple[int, ...] = ()
+    revision_log: tuple[tuple[int, str, str], ...] = ()
+    provenance: str = ""
 
     def to_dict(self) -> dict:
         return {
@@ -75,10 +83,30 @@ class SimulatedStream:
                 }
                 for chunk in self.chunks
             ],
+            "split": self.split,
+            "case_class": self.case_class,
+            "expected_behavior": self.expected_behavior,
+            "base_utterance": self.base_utterance,
+            "context_turns": [
+                {"speaker": speaker, "text": text}
+                for speaker, text in self.context_turns
+            ],
+            "asr": {
+                "engine": "simulated",
+                "final_chunk_index": len(self.chunks) - 1,
+                "supersedes": list(self.asr_supersedes),
+                "obsoletes_prior_partials": bool(self.asr_supersedes),
+                "revision_log": [
+                    {"chunk_index": index, "from": before, "to": after}
+                    for index, before, after in self.revision_log
+                ],
+            },
+            "provenance": self.provenance,
         }
 
     @classmethod
     def from_dict(cls, payload: dict) -> SimulatedStream:
+        asr = payload.get("asr") or {}
         return cls(
             stream_id=payload["stream_id"],
             task_id=payload["task_id"],
@@ -97,6 +125,24 @@ class SimulatedStream:
                 )
                 for chunk in payload["chunks"]
             ),
+            split=str(payload.get("split", "")),
+            case_class=str(payload.get("case_class", "")),
+            expected_behavior=str(payload.get("expected_behavior", "")),
+            base_utterance=str(payload.get("base_utterance", "")),
+            context_turns=tuple(
+                (str(turn.get("speaker", "")), str(turn.get("text", "")))
+                for turn in payload.get("context_turns") or []
+            ),
+            asr_supersedes=tuple(int(index) for index in asr.get("supersedes") or []),
+            revision_log=tuple(
+                (
+                    int(item.get("chunk_index", -1)),
+                    str(item.get("from", "")),
+                    str(item.get("to", "")),
+                )
+                for item in asr.get("revision_log") or []
+            ),
+            provenance=str(payload.get("provenance", "")),
         )
 
 
