@@ -1,5 +1,11 @@
 # Approach Summary
 
+> Historical research/implementation snapshot (22 September). Later stages are
+> now implemented; “planned” tags below describe that snapshot only. Read the
+> [current architecture brief](system-architecture-brief.md),
+> [README](../README.md) and [benchmark report](benchmark-evaluation-report.md)
+> for the current implementation and its unresolved quality failures.
+
 ## Problem Framing
 
 We are building a Streaming Live RAG engine for Samsung Theme 04: a system that can

@@ -25,12 +25,17 @@ LanceDB is the vector database for local retrieval indexes.
   small GPUs during full-corpus builds.
 - `prism-rag run-demo --domain cloud` — run a deterministic streaming RAG demo.
 - `pytest` — run the Python test suite.
-- `docker compose up --build` — build and run the demo container for Gate G1 (runs as host UID; files written under the mounted `.cache` stay host-owned, not root).
+- `bash scripts/run_judge.sh` — load the supplied image and launch the dashboard.
+- `docker compose up --build` — source build after staging `submission-assets/`;
+  see `docs/judge-quickstart.md`. The container is non-root and uses a named
+  telemetry volume, not host corpus/cache mounts.
 
 If a host `prism-rag index` fails with `Permission denied` (or LanceDB hangs at connect), a previous `docker compose run ... prism-rag index` left a root-owned `.cache/lancedb`; clear it with `sudo rm -rf .cache/lancedb` and rebuild.
 
-Preferred `.env` names are `GROQ_API_KEY` and `DEEPSEEK_API_KEY`. The current
-loader also accepts the dashed aliases already used locally. Embedding settings
+Preferred `.env` names are `GROQ_API_KEY` and `DEEPSEEK_API_KEY`; offline G4
+faithfulness evaluation also supports `CEREBRAS_API_KEY` with
+`G4_EVAL_PROVIDER=cerebras` (model defaults to `gpt-oss-120b`). The current loader
+also accepts the dashed aliases already used locally. Embedding settings
 honor `EMBEDDING_BACKEND`, `EMBEDDING_MODEL`, `EMBEDDING_DEVICE`,
 `EMBEDDING_BATCH_SIZE`, `EMBEDDING_FIXED_LENGTH`, `EMBEDDING_CACHE_DIR` and
 `EMBEDDING_LOCAL_FILES_ONLY` (plus dashed aliases).

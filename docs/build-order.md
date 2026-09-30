@@ -1,5 +1,24 @@
 # Build Order
 
+## Current handoff — 30 September 2026
+
+The original sequence below is retained as a dated development plan, not current
+status. Decomposition, session state/refinement, cross-encoder reranking, JSONL
+telemetry, CPU Docker packaging and the SSE dashboard are now implemented.
+Rule/semantic controller and dense/hybrid/rerank ablations have saved evidence.
+Default offline answer recall remains the main quality gap: 59/100 answerable
+queries were uncertain or uncited in the latest 200-query CPU audit. No fresh
+200-query semantic audit establishes current-release G4 acceptance.
+
+Use [benchmark report](benchmark-evaluation-report.md),
+[evaluation gates](evaluation-gates.md), [judge quickstart](judge-quickstart.md)
+and [security policy](../SECURITY.md) for current verification and deployment limits.
+Next priorities are answerable-query recovery without weakening grounding,
+independent semantic validation, broader refinement checks and the human-recorded
+video. Do not rebuild or shrink the full corpus/index as a smoke check.
+
+## Historical build sequence — 22 September 2026
+
 ## Current progress
 
 - Runtime selected: **Python**.

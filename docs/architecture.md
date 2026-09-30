@@ -21,9 +21,11 @@ Incoming Stream: [Chunk 0.0s] → [Chunk 0.8s] → [Chunk 1.6s] → [Utterance E
 Output: Answer + Grounded Citations + Observability Telemetry
 ```
 
-Status of each stage as of the 2026-09-22 audit is tagged on its section below. ② and
-the session-refinement loop are target architecture, not yet built. Answer delivery is
-**not** token-streamed — do not claim streaming token delivery anywhere.
+Implementation status refreshed 2026-09-30: all four stages, session state and
+JSONL telemetry exist. Retrieval can start before final transcript delivery;
+answer delivery is **not** token-streamed. The parallel-routing diagram is a
+conceptual design: the current synchronous pipeline serializes retrieval work.
+See the benchmark report for measured quality limits, not gate-pass assumptions.
 
 ## ① Retrieval Controller — [implemented]
 
@@ -61,7 +63,7 @@ your controller code around these three names makes the design legible and citab
 incremental token causes thrashing, high compute cost, and noisy context windows. The
 controller must wait for semantic intent stability, not just any partial transcript.
 
-## ② Multi-Intent Decomposer — [planned, not implemented]
+## ② Multi-Intent Decomposer — [implemented]
 
 **Job:** split one utterance into 2–4 independent, search-ready sub-queries and route
 them for parallel retrieval.
@@ -78,11 +80,11 @@ them for parallel retrieval.
 See `retrieval.md` for full config, hyperparameters, and validated/invalidated
 techniques.
 
-## ④ Session-Aware Synthesis — [implemented; refinement clause planned]
+## ④ Session-Aware Synthesis — [implemented; refinement accuracy limited]
 
 See `generation-grounding.md` for full config, prompts, and validated techniques.
 
-## ⑤ Observability & Telemetry (cross-cutting) — [partial]
+## ⑤ Observability & Telemetry (cross-cutting) — [implemented]
 
 Log from day one, not as a final step:
 - Timestamps for every retrieval decision (wait/retrieve/suppress) and why
@@ -118,12 +120,13 @@ a suggestion:
 ```
 
 `retrieval_events[].query` records the raw transcript chunk that triggered retrieval.
-`sub_queries[]` records the actual retrieval query after optional LLM rewriting.
+`sub_queries[]` records actual retrieval queries after optional rewriting and
+multi-intent decomposition.
 Deterministic corpus-vocabulary expansion is applied inside retrieval before both
 dense and sparse legs, so downstream metrics should use raw event queries for
 controller timing and sub-queries for retrieval debugging.
 
-## Session refinement — patch, don't restart — [planned, not implemented]
+## Session refinement — patch, don't restart — [implemented, targeted verification]
 
 When a late-arriving constraint changes the answer:
 - Do NOT clear session state or re-run full-corpus retrieval.

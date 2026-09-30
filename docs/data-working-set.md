@@ -34,7 +34,8 @@ Verified working-set coverage:
 scoped by encoder (e.g. `passages__BAAI-bge-small-en-v1.5-384` for neural,
 `passages__hash128` for the fallback), so both indexes can coexist. The neural
 encoder also caches its model under `.cache/fastembed/`. Both directories are
-ignored and should be regenerated locally or through Docker.
+ignored. The supplied judge assets include the existing index and model files;
+normal judge startup must reuse them rather than regenerate them.
 
 ## Committed Stream Fixtures
 
@@ -44,6 +45,7 @@ ignored and should be regenerated locally or through Docker.
 `prism-rag generate-streams --domain <cloud|govt>` (fixed seed); validate with
 `prism-rag validate-streams`. Each line follows the `SimulatedStream` schema in
 `src/prism_live_rag/stream.py` (chunks with timestamps/confidence, `stability_chunk_index`,
-`settling_ms`, `sub_intents`, `qrel_passage_ids`). The `refinement` category described in
-`dataset-and-augmentation.md` is not generated yet.
-
+`settling_ms`, `sub_intents`, `qrel_passage_ids`). The accepted 200-case curated
+test and its temporal streams are also tracked under `data/curated_dataset/`.
+Dashboard follow-ups generate incremental refinement/presentation chunks at runtime;
+the historical base stream generator does not create a broad refinement benchmark.
