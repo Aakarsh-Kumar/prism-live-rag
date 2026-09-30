@@ -81,3 +81,18 @@ def test_provider_date_constraint_cannot_be_dropped_from_changelog_fragment():
     assert not _matches_required_answer_shape(question, ": Upgraded to GitLab 14.3.4.")
     assert not _matches_required_answer_shape(question, "4 November 2021 Upgraded to GitLab 14.3.4.")
     assert _matches_required_answer_shape(question, "31 October 2021 Upgraded to version 14.")
+
+
+def test_run_defaults_to_provider_when_server_key_is_configured():
+    dashboard = dashboard_with_parent()
+    dashboard.provider_client = object()
+    dashboard.provider_available = lambda: True
+    run = dashboard.start_run({"scenario_id": "example"})
+    assert run.options["mode"] == "provider"
+
+
+def test_explicit_offline_run_remains_provider_free():
+    dashboard = dashboard_with_parent()
+    dashboard.provider_client = object()
+    run = dashboard.start_run({"scenario_id": "example", "options": {"mode": "deterministic"}})
+    assert run.options["mode"] == "deterministic"

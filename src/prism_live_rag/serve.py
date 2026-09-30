@@ -346,7 +346,7 @@ class Dashboard:
         options = payload.get("options") or {}
         if not isinstance(options, dict):
             raise ValueError("options must be an object")
-        mode = options.get("mode", "deterministic")
+        mode = options.get("mode", "provider" if getattr(self, "provider_client", None) is not None else "deterministic")
         if not isinstance(mode, str) or mode not in {"deterministic", "provider"}:
             raise ValueError("mode must be deterministic or provider")
         if mode == "provider" and not self.provider_available():
@@ -574,6 +574,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 ],
                 "runtime_code_hash": runtime_code_hash(),
                 "provider_available": self.dashboard.provider_available(),
+                "default_mode": "provider" if self.dashboard.provider_available() else "deterministic",
                 "provider_model": self.dashboard.settings.cerebras_model if self.dashboard.provider_available() else None,
                 "retrieval_mode": self.dashboard.retrieval_mode,
                 "dense_enabled": self.dashboard.retriever.use_dense,
