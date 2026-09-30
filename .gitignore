@@ -16,10 +16,21 @@ build/
 
 # Runtime/generated indexes
 .cache/
+submission-assets/
+submission/
 
 # Large local benchmark artifacts.
 # Keep small qrels/reference metadata commit-friendly, but do not commit corpora,
 # nested clone history, or PDFs intended only for local reference.
 data/.git/
 data/corpora/passage_level/*.jsonl
+data/corpora/passage_level_backup/
+# Ship generated measurements in the submission archive/release, not git.
+data/curated_dataset/evaluation/
+# Local generated reports; evaluation fixtures remain commit-friendly.
+data/g4_answer_analysis.json
+data/ragchecker_results.jsonl
+data/retrieval_eval_results.json
+data/samsung_g4_report.json
+:memory:.ses
 data/mtragun-human/*.pdf
