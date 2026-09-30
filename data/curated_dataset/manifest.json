@@ -1,0 +1,109 @@
+{
+  "disclosure": "Corpus-derived curated suite; not an official MTRAG-UN benchmark. Report its metrics separately from untouched MTRAG-UN results.",
+  "files": {
+    "test": {
+      "bytes": 735619,
+      "path": "curated_dataset/test.jsonl",
+      "sha256": "1f5a13a6a0d6eac5bb927f0b56cc599e85fc8cb9f697647b14f1369874615e78"
+    }
+  },
+  "frozen_test_sha256": "1f5a13a6a0d6eac5bb927f0b56cc599e85fc8cb9f697647b14f1369874615e78",
+  "schema_version": "1.0",
+  "seed": 20260928,
+  "targets": {
+    "dev": {
+      "answerable": 60,
+      "partial": 18,
+      "unanswerable": 24,
+      "underspecified": 18
+    },
+    "test": {
+      "answerable": 100,
+      "partial": 30,
+      "unanswerable": 40,
+      "underspecified": 30
+    },
+    "train": {
+      "answerable": 300,
+      "partial": 90,
+      "unanswerable": 120,
+      "underspecified": 90
+    }
+  },
+  "validation": {
+    "counts": {
+      "test": {
+        "answerable": 100,
+        "partial": 30,
+        "unanswerable": 40,
+        "underspecified": 30
+      }
+    },
+    "domains": {
+      "test": {
+        "cloud": 91,
+        "govt": 109
+      }
+    },
+    "problems": [],
+    "schema_version": "1.0",
+    "tags": {
+      "test": {
+        "CA": 2,
+        "IBM Cloud CLI": 1,
+        "VA forms": 1,
+        "appearance": 1,
+        "bald eagle": 1,
+        "benchmark": 182,
+        "compliance": 1,
+        "database": 2,
+        "date-mismatch": 1,
+        "decoding": 1,
+        "disability compensation": 1,
+        "document-level security": 1,
+        "energy-use": 1,
+        "financial-services-validation": 1,
+        "geometry": 1,
+        "gitlab": 1,
+        "gre-tunnel": 1,
+        "home": 1,
+        "istio": 1,
+        "key-material": 1,
+        "mailing addresses": 1,
+        "missing-detail": 1,
+        "missing-details": 1,
+        "multi_turn": 171,
+        "openssl": 1,
+        "page-sections": 1,
+        "partial": 6,
+        "partial information": 2,
+        "partial support": 1,
+        "partial-information": 4,
+        "partial-support": 1,
+        "pension and survivor benefits": 1,
+        "performance": 2,
+        "phrases": 2,
+        "release-notes": 2,
+        "replica-sets": 2,
+        "requirements": 1,
+        "role-crn": 1,
+        "search results": 1,
+        "service-name": 1,
+        "size": 1,
+        "solar eclipses": 1,
+        "tekton": 1,
+        "thermostat": 1,
+        "timeouts": 1,
+        "tunnel-ip": 1,
+        "update command": 1,
+        "variables": 1,
+        "version check": 1,
+        "version-upgrade": 1,
+        "versioning": 2,
+        "wildcard": 2
+      }
+    },
+    "total_cases": 200,
+    "valid": true
+  }
+}

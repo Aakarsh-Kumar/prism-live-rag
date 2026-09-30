@@ -1,0 +1,2495 @@
+[
+  {
+    "case_id": "mtragun-390ed1de417a9669",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.925,
+    "answer_span_token_coverage": 1.0,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-3e3684c8a13aa2d2",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.925,
+    "answer_span_token_coverage": 1.0,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-8e81a790ddc6a92c",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.925,
+    "answer_span_token_coverage": 1.0,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-10a6eba3ab7a6250",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9087,
+    "answer_span_token_coverage": 0.9231,
+    "query_evidence_overlap": 0.75,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-72ae1241b249037d",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.905,
+    "answer_span_token_coverage": 0.9286,
+    "query_evidence_overlap": 0.7,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-41d4ab9baae7a2be",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": 1.0,
+    "query_evidence_overlap": 0.3333,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-7cde841a7b2c8e01",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.8688,
+    "answer_span_token_coverage": 1.0,
+    "query_evidence_overlap": 0.125,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-bc6112058e174daf",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.8582,
+    "answer_span_token_coverage": 0.9474,
+    "query_evidence_overlap": 0.3,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-a6fb3993d3f71390",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.8191,
+    "answer_span_token_coverage": 0.8,
+    "query_evidence_overlap": 0.7273,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-eca78c40332f48ab",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.81,
+    "answer_span_token_coverage": 0.8,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-26cd714a945b4dc9",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.8015,
+    "answer_span_token_coverage": 0.8333,
+    "query_evidence_overlap": 0.4545,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-041dc9e77cb67226",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7875,
+    "answer_span_token_coverage": 0.8571,
+    "query_evidence_overlap": 0.25,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c1a1d7bfd95e925d",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7875,
+    "answer_span_token_coverage": 0.6964,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c707e225da097508",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.7827,
+    "answer_span_token_coverage": 0.8182,
+    "query_evidence_overlap": 0.4,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-ff135211bcf44512",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.7769,
+    "answer_span_token_coverage": 0.7885,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c2f18f56ac052ea7",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7736,
+    "answer_span_token_coverage": 0.7838,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-e9aeb15b82de4ec7",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.768,
+    "answer_span_token_coverage": 0.8293,
+    "query_evidence_overlap": 0.25,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-7e530e40bbb38721",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7669,
+    "answer_span_token_coverage": 0.7742,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-fcdccc21a466ad39",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.7651,
+    "answer_span_token_coverage": 0.7073,
+    "query_evidence_overlap": 0.8,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-d20ac45b30527ef2",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7375,
+    "answer_span_token_coverage": 0.625,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-b675459966ee47c9",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7315,
+    "answer_span_token_coverage": 0.7083,
+    "query_evidence_overlap": 0.5714,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-beafde7bf07befcd",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7292,
+    "answer_span_token_coverage": 0.6667,
+    "query_evidence_overlap": 0.75,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-85c4c19c9c618ba9",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.7021,
+    "answer_span_token_coverage": 0.5745,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-b2df7b4247cd6e68",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6813,
+    "answer_span_token_coverage": 0.6875,
+    "query_evidence_overlap": 0.3333,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-3b7778002ce64d89",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6721,
+    "answer_span_token_coverage": 0.6744,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-7cae4ccd8f450bf2",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6694,
+    "answer_span_token_coverage": 0.6562,
+    "query_evidence_overlap": 0.4,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-37ace23f99a5494a",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6675,
+    "answer_span_token_coverage": 0.525,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-5e5a246549e65013",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6674,
+    "answer_span_token_coverage": 0.6167,
+    "query_evidence_overlap": 0.5714,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-fc75af48242efc3f",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6542,
+    "answer_span_token_coverage": 0.6667,
+    "query_evidence_overlap": 0.25,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-a25dc2cc43d4c4fc",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6521,
+    "answer_span_token_coverage": 0.6102,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c3a75398fc2d49f4",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6394,
+    "answer_span_token_coverage": 0.5385,
+    "query_evidence_overlap": 0.75,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-f14080053e1252aa",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6339,
+    "answer_span_token_coverage": 0.5484,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-21179070cd8f5e39",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.625,
+    "answer_span_token_coverage": 0.6667,
+    "query_evidence_overlap": 0.0556,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-e545d762c0c5e457",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6236,
+    "answer_span_token_coverage": 0.6154,
+    "query_evidence_overlap": 0.2857,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-3c378e33ce2cdfa3",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.617,
+    "answer_span_token_coverage": 0.56,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c216ef76178a6eb3",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6011,
+    "answer_span_token_coverage": 0.7872,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-fc4a6f946b7ea43c",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5955,
+    "answer_span_token_coverage": 0.6364,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-aebe946471099d1f",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5933,
+    "answer_span_token_coverage": 0.6333,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-aabd606f66fc1b7b",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5769,
+    "answer_span_token_coverage": 0.5385,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-d6566ff70dda092a",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5769,
+    "answer_span_token_coverage": 0.5385,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-494a15d893076d0a",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5748,
+    "answer_span_token_coverage": 0.5484,
+    "query_evidence_overlap": 0.2727,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c4dfc3d30f45836b",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5692,
+    "answer_span_token_coverage": 0.4382,
+    "query_evidence_overlap": 0.75,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-3d6f21b1ee6f9c57",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5678,
+    "answer_span_token_coverage": 0.5254,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-08d24cd2f35c9669",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5643,
+    "answer_span_token_coverage": 0.5,
+    "query_evidence_overlap": 0.4286,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-174f2e62cfabf490",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5618,
+    "answer_span_token_coverage": 0.5882,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-5759eca5e4279a47",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5601,
+    "answer_span_token_coverage": 0.4787,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c7788572e2a3c5ba",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5568,
+    "answer_span_token_coverage": 0.4384,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-d3b14f0d1da6c46f",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5539,
+    "answer_span_token_coverage": 0.5532,
+    "query_evidence_overlap": 0.1111,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-db3b002c2df3764b",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.547,
+    "answer_span_token_coverage": 0.4386,
+    "query_evidence_overlap": 0.6,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-65cf039fdba515a7",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5236,
+    "answer_span_token_coverage": 0.35,
+    "query_evidence_overlap": 0.8571,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c42728d13a7621bf",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5228,
+    "answer_span_token_coverage": 0.3718,
+    "query_evidence_overlap": 0.75,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-9b63b514b12254ba",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5211,
+    "answer_span_token_coverage": 0.3158,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-06328fc0343f1022",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5205,
+    "answer_span_token_coverage": 0.4375,
+    "query_evidence_overlap": 0.4286,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-a2081f527df8a415",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5162,
+    "answer_span_token_coverage": 0.5588,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-38913db0d70dab23",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.512,
+    "answer_span_token_coverage": 0.4815,
+    "query_evidence_overlap": 0.1667,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-06a31e56a1ea54df",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5067,
+    "answer_span_token_coverage": 0.4483,
+    "query_evidence_overlap": 0.2857,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-5581e3989c89d6d7",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4976,
+    "answer_span_token_coverage": 0.3537,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-ad16edd1e8e6da6a",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.496,
+    "answer_span_token_coverage": 0.28,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-2b39604682bb86ee",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.494,
+    "answer_span_token_coverage": 0.32,
+    "query_evidence_overlap": 0.8,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-19a96b6c86c509b5",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4915,
+    "answer_span_token_coverage": 0.4878,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-e2f7107570645910",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4886,
+    "answer_span_token_coverage": 0.3409,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-5d8b6f219d331b9d",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4848,
+    "answer_span_token_coverage": 0.4545,
+    "query_evidence_overlap": 0.1111,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-d3de9f6efe6abb36",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.47,
+    "answer_span_token_coverage": 0.35,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-fc2de03403004207",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4593,
+    "answer_span_token_coverage": 0.4419,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-9a53cf5df1b898f7",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4574,
+    "answer_span_token_coverage": 0.3676,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-65a7de2d340b0c9e",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4573,
+    "answer_span_token_coverage": 0.439,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-82d494198dd9ff12",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4569,
+    "answer_span_token_coverage": 0.367,
+    "query_evidence_overlap": 0.3333,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-6646e0ae8abbb11a",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4563,
+    "answer_span_token_coverage": 0.4138,
+    "query_evidence_overlap": 0.1111,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-456e1d31e26b5413",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.4481,
+    "answer_span_token_coverage": 0.2973,
+    "query_evidence_overlap": 0.6,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-80a325debabd0d1f",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.4475,
+    "answer_span_token_coverage": 0.3393,
+    "query_evidence_overlap": 0.4,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-fb6038b10404f7da",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.4474,
+    "answer_span_token_coverage": 0.3178,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-92093cc9766dbaf8",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4456,
+    "answer_span_token_coverage": 0.4222,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-c3ee3121dc1cc8ce",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.4449,
+    "answer_span_token_coverage": 0.36,
+    "query_evidence_overlap": 0.2857,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-2de77bc15498c92a",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4365,
+    "answer_span_token_coverage": 0.3235,
+    "query_evidence_overlap": 0.4,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-e87bd5ebd3f5414f",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.435,
+    "answer_span_token_coverage": 0.3,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-010218f7bfa1a7ea",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.4333,
+    "answer_span_token_coverage": 0.4762,
+    "query_evidence_overlap": 0.3333,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-dd4aa4abc0cf9513",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4331,
+    "answer_span_token_coverage": 0.2973,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-aa9bf162fe64317f",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4324,
+    "answer_span_token_coverage": 0.2963,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-3a042510000d0314",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.428,
+    "answer_span_token_coverage": 0.3704,
+    "query_evidence_overlap": 0.125,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-dccd0db0ce034c1a",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4188,
+    "answer_span_token_coverage": 0.2615,
+    "query_evidence_overlap": 0.5714,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-99bdeb123c2c6346",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.4155,
+    "answer_span_token_coverage": 0.3793,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-80f4a22f8d725b1b",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.4095,
+    "answer_span_token_coverage": 0.3279,
+    "query_evidence_overlap": 0.2,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-b2cdf91f02565243",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.3999,
+    "answer_span_token_coverage": 0.1856,
+    "query_evidence_overlap": 0.8,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-dfb19591325e91f4",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.3929,
+    "answer_span_token_coverage": 0.2857,
+    "query_evidence_overlap": 0.2857,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-a99fe4a1397bda25",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.3849,
+    "answer_span_token_coverage": 0.2642,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-1cf4541519d89efe",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.3744,
+    "answer_span_token_coverage": 0.2778,
+    "query_evidence_overlap": 0.2,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-0bcd50b4432c2b7a",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.3743,
+    "answer_span_token_coverage": 0.2133,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-893c7a4424004828",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.374,
+    "answer_span_token_coverage": 0.3021,
+    "query_evidence_overlap": 0.0833,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-bbf0f7b822ac2d0f",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.3667,
+    "answer_span_token_coverage": 0.2667,
+    "query_evidence_overlap": 0.2,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-d232e674f834e6c5",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.3659,
+    "answer_span_token_coverage": 0.25,
+    "query_evidence_overlap": 0.2727,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-851d96b446f5a2b4",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.3591,
+    "answer_span_token_coverage": 0.2273,
+    "query_evidence_overlap": 1.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-e4493670ea3d0918",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.3588,
+    "answer_span_token_coverage": 0.2982,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-8b21fd66f2fbbe0e",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.35,
+    "answer_span_token_coverage": 0.2857,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-f28ea3ed4449078b",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.35,
+    "answer_span_token_coverage": 0.2857,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-78300d894bb1b16f",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.348,
+    "answer_span_token_coverage": 0.2439,
+    "query_evidence_overlap": 0.1818,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-15a870d988c5c84a",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.3195,
+    "answer_span_token_coverage": 0.2115,
+    "query_evidence_overlap": 0.1429,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-7665c981b5725d35",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.2809,
+    "answer_span_token_coverage": 0.3298,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "unusual_query_length",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-2f89f7648871c07e",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.262,
+    "answer_span_token_coverage": 0.16,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-13feed03b1466ea8",
+    "case_class": "answerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.2346,
+    "answer_span_token_coverage": 0.1209,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-bef04ecd71fc0796",
+    "case_class": "answerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.1804,
+    "answer_span_token_coverage": 0.0435,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-3b65420ba573f070",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 1.0,
+    "answer_span_token_coverage": 1.0,
+    "query_evidence_overlap": 0.3333,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-0eee5637616a1258",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9174,
+    "answer_span_token_coverage": 0.7586,
+    "query_evidence_overlap": 0.9091,
+    "flags": []
+  },
+  {
+    "case_id": "curated-2dd93246ec28c327",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.8333,
+    "answer_span_token_coverage": 0.6667,
+    "query_evidence_overlap": 0.7778,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-73d06050f89c0617",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.8065,
+    "answer_span_token_coverage": 0.7736,
+    "query_evidence_overlap": 0.1,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-9e2c174943d4b3a0",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.8024,
+    "answer_span_token_coverage": 0.6667,
+    "query_evidence_overlap": 0.5714,
+    "flags": []
+  },
+  {
+    "case_id": "curated-1f4c445a6059b7e6",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7869,
+    "answer_span_token_coverage": 0.5833,
+    "query_evidence_overlap": 0.8571,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-585741d2b0608517",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.7705,
+    "answer_span_token_coverage": 0.7436,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-2ae56c4dd6ecea5f",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.7346,
+    "answer_span_token_coverage": 0.6923,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-4a496c386d2f66aa",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7273,
+    "answer_span_token_coverage": 0.55,
+    "query_evidence_overlap": 0.6154,
+    "flags": []
+  },
+  {
+    "case_id": "curated-a670d4bdc776cc23",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7256,
+    "answer_span_token_coverage": 0.5455,
+    "query_evidence_overlap": 0.625,
+    "flags": []
+  },
+  {
+    "case_id": "curated-826c57e57e682fde",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7118,
+    "answer_span_token_coverage": 0.5938,
+    "query_evidence_overlap": 0.3077,
+    "flags": []
+  },
+  {
+    "case_id": "curated-438ba32b206e1d2b",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7046,
+    "answer_span_token_coverage": 0.5882,
+    "query_evidence_overlap": 0.2857,
+    "flags": []
+  },
+  {
+    "case_id": "curated-0fb03220eaad23cf",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.7024,
+    "answer_span_token_coverage": 0.5238,
+    "query_evidence_overlap": 0.5714,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-c38273dc9bd6aad3",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6975,
+    "answer_span_token_coverage": 0.75,
+    "query_evidence_overlap": 0.15,
+    "flags": [
+      "partial_answer_missing_explicit_gap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-6c18436d6f569af8",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6937,
+    "answer_span_token_coverage": 0.5,
+    "query_evidence_overlap": 0.625,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-6aadf06720cd577a",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.675,
+    "answer_span_token_coverage": 0.5,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-5b3f35c87fb4063d",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6659,
+    "answer_span_token_coverage": 0.5942,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-1f886df7a0e3c709",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6506,
+    "answer_span_token_coverage": 0.5294,
+    "query_evidence_overlap": 0.2,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-7087f868e883f0d7",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.65,
+    "answer_span_token_coverage": 0.5,
+    "query_evidence_overlap": 0.3333,
+    "flags": []
+  },
+  {
+    "case_id": "curated-1e9e9548d920ee25",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6389,
+    "answer_span_token_coverage": 0.5556,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "curated-50effeb72579decc",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6308,
+    "answer_span_token_coverage": 0.4286,
+    "query_evidence_overlap": 0.5385,
+    "flags": []
+  },
+  {
+    "case_id": "curated-307f69ecf003ad7e",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.6282,
+    "answer_span_token_coverage": 0.4545,
+    "query_evidence_overlap": 0.4,
+    "flags": []
+  },
+  {
+    "case_id": "curated-6065d9930cce12f0",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.6182,
+    "answer_span_token_coverage": 0.4,
+    "query_evidence_overlap": 0.5882,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-7e67e2d7fdf4c5da",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.616,
+    "answer_span_token_coverage": 0.4839,
+    "query_evidence_overlap": 0.1818,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-72c374cab6d045e3",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.615,
+    "answer_span_token_coverage": 0.4143,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-a268bb55cab695f4",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5983,
+    "answer_span_token_coverage": 0.3636,
+    "query_evidence_overlap": 0.625,
+    "flags": []
+  },
+  {
+    "case_id": "curated-4e8a788017c84c87",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.5961,
+    "answer_span_token_coverage": 0.5455,
+    "query_evidence_overlap": 0.4286,
+    "flags": [
+      "partial_answer_missing_explicit_gap"
+    ]
+  },
+  {
+    "case_id": "curated-f34c15196dd871c9",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5905,
+    "answer_span_token_coverage": 0.3333,
+    "query_evidence_overlap": 0.7143,
+    "flags": [
+      "low_answer_span_overlap"
+    ]
+  },
+  {
+    "case_id": "curated-ec665f852343161f",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.586,
+    "answer_span_token_coverage": 0.48,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "curated-76b75f88ec7d57fe",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.5822,
+    "answer_span_token_coverage": 0.4211,
+    "query_evidence_overlap": 0.25,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-f50a5329ce47e8ac",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5808,
+    "answer_span_token_coverage": 0.6154,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "partial_answer_missing_explicit_gap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-a3508be67a023810",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.5781,
+    "answer_span_token_coverage": 0.4211,
+    "query_evidence_overlap": 0.2222,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-ae51ec46da0e2a6b",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.5756,
+    "answer_span_token_coverage": 0.4651,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-08f55a5d6be667e3",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.5664,
+    "answer_span_token_coverage": 0.5455,
+    "query_evidence_overlap": 0.2308,
+    "flags": [
+      "partial_answer_missing_explicit_gap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-5e84d57be4c2837b",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.5495,
+    "answer_span_token_coverage": 0.3636,
+    "query_evidence_overlap": 0.3,
+    "flags": []
+  },
+  {
+    "case_id": "curated-eb785c7b1860aff3",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.5425,
+    "answer_span_token_coverage": 0.4,
+    "query_evidence_overlap": 0.0833,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-3f8c6f9953da8e45",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.5379,
+    "answer_span_token_coverage": 0.3636,
+    "query_evidence_overlap": 0.2222,
+    "flags": [
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-f9bb930c21e41e06",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.5372,
+    "answer_span_token_coverage": 0.4103,
+    "query_evidence_overlap": 0.6667,
+    "flags": [
+      "partial_answer_missing_explicit_gap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-ea128fc593b2d10d",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.537,
+    "answer_span_token_coverage": 0.3182,
+    "query_evidence_overlap": 0.4286,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-fe2a644dc03edce6",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.5269,
+    "answer_span_token_coverage": 0.3462,
+    "query_evidence_overlap": 0.2308,
+    "flags": [
+      "low_answer_span_overlap"
+    ]
+  },
+  {
+    "case_id": "mtragun-7377ae1b0cd2bd80",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.5048,
+    "answer_span_token_coverage": 0.3333,
+    "query_evidence_overlap": 0.1429,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "curated-7b74bcd0a9324f43",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.448,
+    "answer_span_token_coverage": 0.2353,
+    "query_evidence_overlap": 0.2222,
+    "flags": [
+      "low_answer_span_overlap"
+    ]
+  },
+  {
+    "case_id": "curated-f2a9d9e7ab9c853c",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.4298,
+    "answer_span_token_coverage": 0.1765,
+    "query_evidence_overlap": 0.375,
+    "flags": [
+      "low_answer_span_overlap"
+    ]
+  },
+  {
+    "case_id": "mtragun-c93d7fc842b0dc54",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.4262,
+    "answer_span_token_coverage": 0.1905,
+    "query_evidence_overlap": 0.2857,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-0f79b84eb3c91974",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.3814,
+    "answer_span_token_coverage": 0.3,
+    "query_evidence_overlap": 0.1429,
+    "flags": [
+      "low_answer_span_overlap",
+      "partial_answer_missing_explicit_gap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-5bf0483e3aeb09de",
+    "case_class": "partial",
+    "domain": "cloud",
+    "selected": false,
+    "score": 0.38,
+    "answer_span_token_coverage": 0.1429,
+    "query_evidence_overlap": 0.2,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-439ef7478e37a938",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.3717,
+    "answer_span_token_coverage": 0.1739,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "low_answer_span_overlap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-32b035f1c418e58f",
+    "case_class": "partial",
+    "domain": "govt",
+    "selected": false,
+    "score": 0.3485,
+    "answer_span_token_coverage": 0.1765,
+    "query_evidence_overlap": 0.5,
+    "flags": [
+      "low_answer_span_overlap",
+      "partial_answer_missing_explicit_gap",
+      "lexical_spans_need_review"
+    ]
+  },
+  {
+    "case_id": "mtragun-04b1a3ffaa9d0769",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-07c9beacd58f3481",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-086150dae8ccbd7c",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-187f382af9721ff0",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-203590df43946530",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-26af8dc45e7aca8a",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-2738faa290afda85",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-27fb43252c7c8b64",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-28dfa0e6ddf59adb",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-33e847b1645748d2",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-38177b36b8422a3f",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-38f85b3268b3c05d",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-3c973b70efc2b1f9",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-544f3e3ce1291ba3",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-5781bf51db793e6c",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-58f6560032bc7be7",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-5d0de9bc6e3a1fdb",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-63dbefc512d184a4",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-6b13757590ae6b09",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-6bcbf12ba7d1379d",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-6d7a041ed0c7b2fe",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-82fc0542f1092ec0",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-84195eda0c6511dc",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-9bc7a48bc8b121b9",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-9c69ac04189a068d",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-9db37f6b2d84b409",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-a0eecc0f8ada652a",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-a77df53f09bad5b1",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-ab11781e945e673c",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-babb52ec1fe726f2",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-dd37d78bb59bd60d",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-e8a1199b2092a58e",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-ebdd0a5e5978f345",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-eefbdbb728e34f9d",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-f05c8fc8f9de6e7d",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-f35fec46b02bf08a",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-fe96d153a1f684cb",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-ffa0880e3fed1ecc",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-fff5add69376defb",
+    "case_class": "unanswerable",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-7354d4acbad26c54",
+    "case_class": "unanswerable",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.8,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": [
+      "unusual_query_length"
+    ]
+  },
+  {
+    "case_id": "mtragun-01c5bec051bf53c8",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-076581a5436ceb68",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-142e7c8becfab3d0",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-18c47e186d245f2d",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-209032081c8a12fb",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-20f32bbeb9ff75df",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-299ed10b4d77102b",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-2a95b5c76672613c",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-33674c7f999a2cc5",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-38ee996afe9a61f5",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-3bb8a9b9965655b9",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-45629e3b7e29c00b",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-55a9787847bfdd32",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-598ab9f762b3c1a5",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-5c2b92555327274e",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-5dda6689ace83eac",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-6d74b3030afc1c15",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-81c2e60486563814",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-9a72284f97f50f85",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-b6dfaf4705b35399",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-bf309d1c0116767a",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-c6eed9326480abf6",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-dfd242eb7578b31c",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-e4c29e9a38bd4b84",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-f14cac6baf544e7f",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-f1c9e2f5751b8d7f",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-f2d1c5ba4f4f86ca",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-f6aebf514d15b3ff",
+    "case_class": "underspecified",
+    "domain": "govt",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-fac808c02eb047b4",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  },
+  {
+    "case_id": "mtragun-fba6fe8e053edc35",
+    "case_class": "underspecified",
+    "domain": "cloud",
+    "selected": true,
+    "score": 0.9,
+    "answer_span_token_coverage": null,
+    "query_evidence_overlap": 0.0,
+    "flags": []
+  }
+]
