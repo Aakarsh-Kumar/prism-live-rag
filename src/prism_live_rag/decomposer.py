@@ -2,7 +2,7 @@
 
 Implements parallel query generation from partial transcripts following the Samsung
 architecture specification:
-- Cap sub-queries at 2-4 to prevent over-fragmentation  
+- Cap sub-queries at 2-4 to prevent over-fragmentation
 - Use concat(last-turn || standalone-rewrite) base formulation
 - Handle dependent multi-hop questions sequentially, not in parallel
 - Provide circuit breaker patterns for LLM failures
@@ -64,7 +64,7 @@ def inherit_defined_subject(parts: list[str]) -> list[str]:
 
 class MultiIntentResult:
     """Result of multi-intent query decomposition."""
-    
+
     def __init__(
         self,
         sub_queries: list[str],
@@ -98,11 +98,11 @@ class MultiIntentResult:
 
 class MultiIntentDecomposer(Protocol):
     """Protocol for multi-intent query decomposition."""
-    
+
     def decompose(self, query: str, context: str = "") -> MultiIntentResult:
         """Decompose query into parallel sub-queries."""
         ...
-    
+
     def get_health_status(self) -> dict:
         """Get health and performance metrics."""
         ...
@@ -110,11 +110,11 @@ class MultiIntentDecomposer(Protocol):
 
 class RuleBasedDecomposer:
     """Rule-based decomposer as baseline (no LLM calls)."""
-    
+
     def __init__(self):
         self.total_queries = 0
         self.multi_intent_detected = 0
-        
+
     def decompose(self, query: str, context: str = "") -> MultiIntentResult:
         """Split explicit query boundaries without splitting noun lists on ``and``."""
         start_time = time.perf_counter()
@@ -127,9 +127,9 @@ class RuleBasedDecomposer:
             reason = f"Detected multi-intent pattern, split into {len(sub_queries)} sub-queries"
         else:
             reason = "Single intent detected, no decomposition needed"
-        
+
         processing_time = (time.perf_counter() - start_time) * 1000
-        
+
         return MultiIntentResult(
             sub_queries=sub_queries,
             decomposition_reason=reason,
@@ -137,7 +137,7 @@ class RuleBasedDecomposer:
             processing_time_ms=processing_time,
             original_query=query,
         )
-    
+
     def _split_query(self, query: str) -> list[str]:
         """Split only clear clause boundaries; keep coordinated noun phrases intact."""
         # Coordinated interrogatives share a predicate: splitting at "and"
@@ -193,14 +193,14 @@ class RuleBasedDecomposer:
         if len(valid_parts) < 2:
             return [query.strip()]
         return valid_parts[:4]
-    
+
     def get_health_status(self) -> dict:
         """Get decomposer health metrics."""
         multi_intent_rate = (
-            self.multi_intent_detected / self.total_queries 
+            self.multi_intent_detected / self.total_queries
             if self.total_queries > 0 else 0.0
         )
-        
+
         return {
             "total_queries": self.total_queries,
             "multi_intent_detected": self.multi_intent_detected,
@@ -212,7 +212,7 @@ class RuleBasedDecomposer:
 
 class LLMDecomposer:
     """LLM-based decomposer with circuit breaker pattern."""
-    
+
     def __init__(
         self,
         client: ChatClient,
@@ -233,33 +233,33 @@ class LLMDecomposer:
         self.fallback_to_single = fallback_to_single
         self.circuit_breaker_cooldown_s = max(0.0, circuit_breaker_cooldown_s)
         self.wait_for_circuit_recovery = wait_for_circuit_recovery
-        
+
         # Health tracking
         self.total_queries = 0
         self.multi_intent_detected = 0
         self.llm_failures = 0
         self.fallback_uses = 0
         self.total_latency_ms = 0.0
-        
+
         # Circuit breaker state
         self.consecutive_failures = 0
         self.circuit_open = False
         self.last_failure_time = 0
-        
+
     def decompose(self, query: str, context: str = "") -> MultiIntentResult:
         """Decompose query using LLM with circuit breaker protection."""
         start_time = time.perf_counter()
         self.total_queries += 1
-        
+
         # Circuit breaker check
         if self._circuit_breaker_active():
             return self._fallback_decompose(query, "Circuit breaker active", start_time)
-        
+
         try:
             result = self._llm_decompose(query, context)
             self._reset_circuit_breaker()
             return result
-            
+
         except (ProviderError, ValueError, json.JSONDecodeError) as e:
             self._record_failure()
             if self.fallback_to_single:
@@ -269,21 +269,21 @@ class LLMDecomposer:
                     if status:
                         failure_kind = f"{failure_kind}_HTTP_{status.group(1)}"
                 return self._fallback_decompose(
-                    query, 
-                    f"LLM failed ({failure_kind}), using fallback", 
+                    query,
+                    f"LLM failed ({failure_kind}), using fallback",
                     start_time
                 )
             else:
                 raise
-    
+
     def _llm_decompose(self, query: str, context: str) -> MultiIntentResult:
         """Core LLM-based decomposition logic."""
         start_time = time.perf_counter()
-        
+
         # Build prompt for multi-intent decomposition
         system_prompt = self._build_system_prompt()
         user_prompt = self._build_user_prompt(query, context)
-        
+
         # Make LLM call with timeout
         response = self.client.chat(
             messages=[
@@ -293,27 +293,27 @@ class LLMDecomposer:
             temperature=0.0,
             max_tokens=500,   # Sufficient for 2-4 sub-queries
         )
-        
+
         # Parse JSON response
         result_data = extract_json_object(response)
-        
+
         # Validate and extract results
         sub_queries = result_data.get("sub_queries", [])
         is_multi_intent = result_data.get("is_multi_intent") is True
         reason = result_data.get("reasoning", "LLM decomposition")
-        
+
         # Apply Samsung constraints
         sub_queries = self._validate_sub_queries(sub_queries, query)
         if not is_multi_intent or len(sub_queries) < 2:
             is_multi_intent = False
             sub_queries = [query.strip()]
-        
+
         if is_multi_intent:
             self.multi_intent_detected += 1
-        
+
         processing_time = (time.perf_counter() - start_time) * 1000
         self.total_latency_ms += processing_time
-        
+
         return MultiIntentResult(
             sub_queries=sub_queries,
             decomposition_reason=reason,
@@ -322,14 +322,14 @@ class LLMDecomposer:
             original_query=query,
             provider_status="success",
         )
-    
+
     def _build_system_prompt(self) -> str:
         """Build system prompt for multi-intent decomposition."""
         return f"""You are a query decomposer for a streaming RAG system. Your job is to analyze user queries and decide whether they contain multiple distinct intents that should be searched in parallel.
 
 GUIDELINES:
 1. Cap sub-queries at {self.max_sub_queries} maximum to prevent over-fragmentation
-2. Only decompose when queries have truly independent search intents  
+2. Only decompose when queries have truly independent search intents
 3. Do NOT decompose dependent multi-hop questions - they need sequential resolution
 4. Each sub-query must be self-contained and searchable
 5. Preserve the original meaning and context
@@ -349,7 +349,7 @@ EXAMPLES:
 - "How do I migrate from service A to service B?" → Single intent (sequential process)
 - "What are the costs and security features?" → Multi-intent (costs + security)
 - "What happens after I configure the database?" → Single intent (sequential step)"""
-    
+
     def _build_user_prompt(self, query: str, context: str) -> str:
         """Build user prompt with query and context."""
         prompt = f"Query: {query}\n\n"
@@ -357,12 +357,12 @@ EXAMPLES:
             prompt += f"Context: {context}\n\n"
         prompt += "Analyze this query and provide your JSON response:"
         return prompt
-    
+
     def _validate_sub_queries(self, sub_queries: list[str], original_query: str) -> list[str]:
         """Validate and clean sub-queries per Samsung constraints."""
         if not isinstance(sub_queries, list) or not sub_queries:
             return [original_query.strip()]
-        
+
         # Clean and filter sub-queries
         valid_queries = []
         seen = set()
@@ -373,22 +373,22 @@ EXAMPLES:
                 if len(cleaned) >= self.min_query_length and normalized not in seen:
                     valid_queries.append(cleaned)
                     seen.add(normalized)
-        
+
         # Apply max sub-queries constraint
         if len(valid_queries) > self.max_sub_queries:
             valid_queries = valid_queries[:self.max_sub_queries]
-        
+
         # Always return at least the original if validation fails
         if not valid_queries:
             valid_queries = [original_query.strip()]
-        
+
         return inherit_shared_date(original_query, valid_queries)
-    
+
     def _circuit_breaker_active(self) -> bool:
         """Check if circuit breaker should block LLM calls."""
         if not self.circuit_open:
             return False
-        
+
         # Live mode falls back immediately; offline evaluation can wait for one
         # half-open probe instead of treating the remainder of a batch as failed.
         elapsed = time.time() - self.last_failure_time
@@ -403,31 +403,31 @@ EXAMPLES:
             return False
 
         return True
-    
+
     def _record_failure(self):
         """Record LLM failure and update circuit breaker state."""
         self.llm_failures += 1
         self.consecutive_failures += 1
         self.last_failure_time = time.time()
-        
+
         if self.consecutive_failures >= self.max_failures:
             self.circuit_open = True
-    
+
     def _reset_circuit_breaker(self):
         """Reset circuit breaker on successful call."""
         self.consecutive_failures = 0
         self.circuit_open = False
-    
+
     def _fallback_decompose(
-        self, 
-        query: str, 
-        reason: str, 
+        self,
+        query: str,
+        reason: str,
         start_time: float
     ) -> MultiIntentResult:
         """Fallback to single query when LLM fails."""
         self.fallback_uses += 1
         processing_time = (time.perf_counter() - start_time) * 1000
-        
+
         return MultiIntentResult(
             sub_queries=[query.strip()],
             decomposition_reason=reason,
@@ -437,22 +437,22 @@ EXAMPLES:
             provider_status="fallback",
             provider_error=reason,
         )
-    
+
     def get_health_status(self) -> dict:
         """Get decomposer health and performance metrics."""
         multi_intent_rate = (
-            self.multi_intent_detected / self.total_queries 
+            self.multi_intent_detected / self.total_queries
             if self.total_queries > 0 else 0.0
         )
         error_rate = (
-            self.llm_failures / self.total_queries 
+            self.llm_failures / self.total_queries
             if self.total_queries > 0 else 0.0
         )
         avg_latency_ms = (
-            self.total_latency_ms / self.total_queries 
+            self.total_latency_ms / self.total_queries
             if self.total_queries > 0 else 0.0
         )
-        
+
         return {
             "total_queries": self.total_queries,
             "multi_intent_detected": self.multi_intent_detected,
@@ -473,12 +473,12 @@ def build_decomposer(
     **kwargs
 ) -> MultiIntentDecomposer:
     """Factory function to build decomposer instance.
-    
+
     Args:
         decomposer_type: "rule_based" or "llm_based"
         client: ChatClient for LLM-based decomposer
         **kwargs: Additional configuration parameters
-    
+
     Returns:
         MultiIntentDecomposer instance
     """
