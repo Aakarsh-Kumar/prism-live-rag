@@ -3,6 +3,8 @@
 .env.*
 .venv
 .cache
+submission/
+submission-assets/
 .pytest_cache
 __pycache__
 *.pyc
@@ -10,4 +12,3 @@ data
 dist
 build
 *.egg-info
-

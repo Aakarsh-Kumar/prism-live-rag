@@ -1,5 +1,6 @@
 services:
   app:
+    platform: linux/amd64
     image: prism-live-rag:judge
     build: .
     ports:
@@ -10,11 +11,13 @@ services:
     environment:
       PYTEST_ADDOPTS: "-o cache_dir=/app/.cache/pytest"
       EMBEDDING_DEVICE: cpu
-      EMBEDDING_CACHE_DIR: /app/.cache/fastembed
+      EMBEDDING_CACHE_DIR: /opt/prism-assets/current/fastembed
       EMBEDDING_LOCAL_FILES_ONLY: "true"
-      HF_HOME: /opt/models/huggingface
+      HF_HOME: /opt/prism-assets/current/huggingface
     volumes:
       - telemetry:/app/.cache/telemetry
+      - assets:/opt/prism-assets
     command: ["prism-rag", "serve", "--host", "0.0.0.0", "--port", "8080"]
 volumes:
   telemetry:
+  assets:

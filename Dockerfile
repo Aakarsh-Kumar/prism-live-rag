@@ -23,15 +23,18 @@ COPY AGENTS.md ./
 COPY docs ./docs
 COPY tests ./tests
 COPY scripts ./scripts
+COPY release-assets.json ./release-assets.json
+COPY Dockerfile docker-compose.yml SECURITY.md ./
+ENV EMBEDDING_CACHE_DIR=/opt/prism-assets/current/fastembed HF_HOME=/opt/prism-assets/current/huggingface
 RUN useradd --create-home --uid 1000 prism
-COPY --chown=prism:prism submission-assets/data ./data
-COPY --chown=prism:prism submission-assets/lancedb ./.cache/lancedb
-COPY --chown=prism:prism submission-assets/fastembed ./.cache/fastembed
-COPY --chown=prism:prism submission-assets/huggingface /opt/models/huggingface
-RUN mkdir -p /app/.cache/telemetry && chown prism:prism /app/.cache/telemetry
+RUN mkdir -p /app/.cache/telemetry /app/.cache/pytest /opt/prism-assets \
+    && ln -s /opt/prism-assets/current/data /app/data \
+    && ln -s /opt/prism-assets/current/lancedb /app/.cache/lancedb \
+    && chown prism:prism /app/.cache/telemetry /app/.cache/pytest /opt/prism-assets
 USER prism
 EXPOSE 8080
-HEALTHCHECK --interval=10s --timeout=5s --start-period=300s --retries=3 \
+HEALTHCHECK --interval=10s --timeout=5s --start-period=1800s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=4)"
 
+ENTRYPOINT ["python", "-m", "prism_live_rag.bootstrap"]
 CMD ["prism-rag", "serve", "--host", "0.0.0.0", "--port", "8080"]

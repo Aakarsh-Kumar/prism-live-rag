@@ -11,8 +11,11 @@ service. Use the dashboard only through a loopback address. Compose publishes
 - API run requests require JSON, bounded nonnegative content length and a local
   Host name. Cross-origin browser requests are rejected. Static asset paths are
   restricted to the packaged asset directory; dynamic text uses DOM text nodes.
-- The Docker process is non-root. Models and the index are bundled for offline
-  inference; normal startup does not fetch executable model code.
+- The Docker process is non-root. First startup downloads a public HTTPS release
+  pinned by archive/file-manifest SHA-256, rejects traversal, links and special
+  files, and retains the existing index/models in a Docker volume. Cached startup
+  verifies the payload without downloading. Release assets are trusted data/models,
+  not arbitrary mutable upstream downloads; no remote model code is requested.
 - There is no authentication, per-user isolation or production resource quota.
   The executor serializes runs, but its queue/history can grow. Use with trusted
   local users only. Five-RPM provider pacing is not an authorization mechanism.

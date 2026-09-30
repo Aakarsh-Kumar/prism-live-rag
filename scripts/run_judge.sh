@@ -5,22 +5,12 @@ if ! docker info >/dev/null 2>&1; then
   echo "Start Docker Desktop/the Docker daemon, then run this command again." >&2
   exit 1
 fi
-if ! docker image inspect prism-live-rag:judge >/dev/null 2>&1; then
-  if [[ -f prism-live-rag-judge.tar.gz ]]; then
-    docker load -i prism-live-rag-judge.tar.gz
-  elif [[ -f prism-live-rag-judge.tar ]]; then
-    docker load -i prism-live-rag-judge.tar
-  else
-    echo "Place the supplied image archive in the repository root, or build using the asset bundle." >&2
-    exit 1
-  fi
-fi
-docker compose up --no-build -d
+docker compose up --build -d
 echo "Dashboard: http://localhost:${PRISM_PORT:-8080}"
 echo "Follow initialization: docker compose logs -f app"
 if [[ "${1:-}" == "--verify" ]]; then
   ready=false
-  for ((attempt=0; attempt<90; attempt++)); do
+  for ((attempt=0; attempt<900; attempt++)); do
     if docker compose exec -T app python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health',timeout=3)" >/dev/null 2>&1; then
       ready=true
       break
