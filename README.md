@@ -38,7 +38,7 @@ First build/start needs internet and can take several minutes; cached startup
 does not redownload or rebuild the index. Allocate at least 6 GB RAM to Docker.
 See [judge quickstart](docs/judge-quickstart.md) for resources and port configuration.
 
-The pinned [judge asset release](https://github.com/Aakarsh-Kumar/prism-live-rag/releases/tag/judge-assets-2026-09-30)
+The pinned [judge asset release](https://github.com/Aakarsh-Kumar/prism-live-rag/releases/tag/PRISM_GENAI_HACKATHON_Y2026)
 is public. On 30 September 2026, anonymous download and a fresh-volume Docker
 bootstrap passed archive/manifest checks and corpus/query validation. Judges do
 not need GitHub authentication or a local asset archive.

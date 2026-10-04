@@ -61,7 +61,7 @@ not token-streamed. Citation overlap diagnostics are not semantic verdicts.
 
 ## Maintainer publication prerequisite
 
-The pinned [asset release](https://github.com/Aakarsh-Kumar/prism-live-rag/releases/tag/judge-assets-2026-09-30)
+The pinned [asset release](https://github.com/Aakarsh-Kumar/prism-live-rag/releases/tag/PRISM_GENAI_HACKATHON_Y2026)
 is published and publicly readable. Its URL, size, archive SHA-256 and manifest
 SHA-256 are pinned in `release-assets.json`. A missing/private release is reported clearly; the app does
 not silently run with missing corpus/models or ask judges for GitHub credentials.
