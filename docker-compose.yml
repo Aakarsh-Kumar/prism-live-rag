@@ -1,7 +1,7 @@
 services:
   app:
     platform: linux/amd64
-    image: prism-live-rag:judge
+    image: aakarshkumar25/prism-live-rag:judge
     build: .
     ports:
       - "127.0.0.1:${PRISM_PORT:-8080}:8080"
