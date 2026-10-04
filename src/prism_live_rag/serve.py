@@ -696,8 +696,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
 def serve_dashboard(*, host: str = "127.0.0.1", port: int = 8080) -> None:
     dashboard = Dashboard()
     handler = type("BoundDashboardHandler", (DashboardHandler,), {"dashboard": dashboard})
-    server = ThreadingHTTPServer((host, port), handler)
-    print(f"Prism Live RAG dashboard: http://{host}:{port}", flush=True)
+    display_host = "localhost" if host in {"0.0.0.0", "::"} else host
+    print(f"Prism Live RAG dashboard: http://{display_host}:{port}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
