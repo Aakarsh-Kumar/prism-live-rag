@@ -26,17 +26,18 @@ git clone https://github.com/Aakarsh-Kumar/prism-live-rag.git
 cd prism-live-rag
 cp .env.example .env
 # Edit .env and set CEREBRAS_API_KEY.
-docker compose up --build
+docker compose up
 ```
 
 On Windows, copy `.env.example` using your editor/file manager. Open
 **http://localhost:8080** when startup logs show the dashboard URL.
-Docker automatically downloads the pinned corpus/index/model release asset,
-verifies archive and file checksums, and caches it in a persistent volume.
-**No manual asset download, extraction, GPU or host Python is required.**
-First build/start needs internet and can take several minutes; cached startup
-does not redownload or rebuild the index. Allocate at least 6 GB RAM to Docker.
-See [judge quickstart](docs/judge-quickstart.md) for resources and port configuration.
+Docker automatically pulls the prebuilt image `aakarshkumar25/prism-live-rag:judge`
+from Docker Hub, downloads the pinned corpus/index/model release asset, verifies
+archive and file checksums, and caches it in a persistent volume.
+**No manual asset download, extraction, GPU, host Python, or local build is required.**
+First run pulls the prebuilt image and downloads assets in ~2-4 minutes; subsequent starts
+are instantaneous. (To build from source instead, append `--build`).
+Allocate at least 6 GB RAM to Docker. See [judge quickstart](docs/judge-quickstart.md).
 
 The pinned [judge asset release](https://github.com/Aakarsh-Kumar/prism-live-rag/releases/tag/PRISM_GENAI_HACKATHON_Y2026)
 is public. On 30 September 2026, anonymous download and a fresh-volume Docker

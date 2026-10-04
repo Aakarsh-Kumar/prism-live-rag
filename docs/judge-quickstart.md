@@ -7,21 +7,21 @@ git clone https://github.com/Aakarsh-Kumar/prism-live-rag.git
 cd prism-live-rag
 cp .env.example .env
 # Edit .env: set CEREBRAS_API_KEY to your own Cerebras key.
-docker compose up --build
+docker compose up
 ```
 
 On Windows, copy `.env.example` to `.env` using your editor or file manager.
-No host Python, GPU, corpus download, model installation, archive extraction or
-manual index build is required.
+No host Python, GPU, corpus download, model installation, archive extraction,
+or local image compilation is required.
 
 Open **http://localhost:8080** once the logs print the dashboard URL. Leave the
 Compose terminal running; Ctrl+C stops the app. Add `-d` for background operation.
 
-The first build needs internet for pinned dependencies. First startup automatically
-downloads the approximately 610 MiB release asset pinned in `release-assets.json`,
-verifies its size and SHA-256, validates/extracts its file manifest, and caches the
-corpus, existing index and CPU models in a Docker volume. Logs show preparation and
-download progress. Startup never rebuilds the index or shrinks the corpus.
+Docker automatically pulls the prebuilt image `aakarshkumar25/prism-live-rag:judge`
+from Docker Hub. First startup automatically downloads the pinned ~610 MiB release
+asset from `release-assets.json`, verifies its SHA-256 and manifest, and caches
+the corpus and LanceDB index in a persistent Docker volume. (To build from source
+locally instead, run `docker compose up --build`).
 
 With a configured key, the dashboard and API default to **Automatic / Cerebras
 GPT-OSS-120B**, paced at five requests/minute. Routing still skips the LLM when it

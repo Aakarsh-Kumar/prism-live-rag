@@ -5,7 +5,7 @@ if ! docker info >/dev/null 2>&1; then
   echo "Start Docker Desktop/the Docker daemon, then run this command again." >&2
   exit 1
 fi
-docker compose up --build -d
+docker compose up -d
 echo "Dashboard: http://localhost:${PRISM_PORT:-8080}"
 echo "Follow initialization: docker compose logs -f app"
 if [[ "${1:-}" == "--verify" ]]; then
